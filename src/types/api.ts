@@ -1,16 +1,30 @@
-export interface TipoEvento{
+export interface TipoEvento {
     idTipoEvento: string;
     titulo: string;
 }
 
-export interface Instituicao{
+export interface TipoUsuario {
+    idTipoUsuario: string;
+    titulo: string;
+
+}
+
+export interface Instituicao {
     idInstituicao: string;
     cnpj: string;
     nomeFantasia: string;
     endereço: string;
 }
 
-export interface Evento{
+export interface Usuario {
+    idUsuario: string;
+    nome: string;
+    email: string;
+    idTipoUsuario: string;
+    idTipoUsuarioNavigation?: TipoUsuario | null;
+}
+
+export interface Evento {
     idEvento: string
     nomeEvento: string
     descricao: string;
@@ -19,5 +33,35 @@ export interface Evento{
     idTipoEvento?: string | null;
     idInstituicao?: string | null;
     idTipoEventoNavigation?: TipoEvento | null;
-    idTipoInstituicaoNavigation?: Instituicao | null;
+    idInstituicaoNavigation?: Instituicao | null;
+}
+
+export interface Presenca {
+    idPresenca: string;
+    situacao: boolean;
+    idEvento: string;
+    idUsuario: string | null;
+    idEventoNavigation?: Evento | null;
+}
+
+export interface LoginPayload{
+    email: string;
+    senha: string;
+}
+
+export interface LoginResponse{
+    token: string;
+    expiracao: string;
+    usuario: Usuario;
+}
+
+export interface AuthSession extends LoginResponse {
+    usuario: Usuario;
+}
+
+
+export interface PresencaPayload {
+    situacao: string;
+    idEventp: string;
+    idUsuario: string | null;
 }

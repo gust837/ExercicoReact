@@ -18,25 +18,40 @@ function Carrossel({ eventosProximos }: CarrosselProps) {
                 {/* Se não tiver evento nenhum, mostra a imagem padrão */}
                 {eventosProximos.length === 0 ? (
                     <div className="carousel-item active">
-                        <img src={bannerPadrao} className="carousel-banner" alt="Banner padrão" />
+                        <div className="carousel-banner-wrapper">
+                            <img src={bannerPadrao} className="carousel-banner-main" alt="Banner padrão" />
+                        </div>
                     </div>
+
                 ) : (
                     /* Se tiver eventos, faz um loop criando os slides */
-                    eventosProximos.map((evento, index) => (
-                        <div key={evento.idEvento} className={`carousel-item ${index === 0 ? 'active' : ''}`}>
-                            <img 
-                                src={evento.imagemUrl || bannerPadrao} 
-                                className="carousel-banner" 
-                                alt={`Banner do evento ${evento.nomeEvento}`} 
-                                style={{ objectFit: 'cover', height: '100%', width: '100%' }}
-                            />
-                            {/* Legenda com o Nome e Data do Evento */}
-                            <div className="carousel-caption d-none d-md-block" style={{ backgroundColor: 'rgba(0,0,0,0.6)', borderRadius: '8px', padding: '10px' }}>
-                                <h3>{evento.nomeEvento}</h3>
-                                <p>{new Date(evento.dataEvento).toLocaleDateString('pt-BR')}</p>
+                    eventosProximos.map((evento, index) => {
+                        const imagemSrc = evento.imagemUrl || bannerPadrao;
+                        return (
+                            <div key={evento.idEvento} className={`carousel-item ${index === 0 ? 'active' : ''}`}>
+                                <div className="carousel-banner-wrapper">
+                                    {/* 1. Imagem de fundo desfocada (preenche tudo) */}
+                                    <img
+                                        src={imagemSrc}
+                                        className="carousel-bg-blur"
+                                        alt=""
+                                        aria-hidden="true"
+                                    />
+                                    {/* 2. Imagem principal inteira (sem cortes) */}
+                                    <img
+                                        src={imagemSrc}
+                                        className="carousel-banner-main"
+                                        alt={`Banner do evento ${evento.nomeEvento}`}
+                                    />
+                                </div>
+                                {/* Legenda estilizada */}
+                                <div className="carousel-legenda">
+                                    <h3>{evento.nomeEvento}</h3>
+                                    <p>{new Date(evento.dataEvento).toLocaleDateString('pt-BR')}</p>
+                                </div>
                             </div>
-                        </div>
-                    ))
+                        );
+                    })
                 )}
             </div>
 
