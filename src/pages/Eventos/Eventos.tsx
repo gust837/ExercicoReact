@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
-import type { Evento } from '../../../types/api';
-import { eventoService } from '../../../services/eventPlusService';
+import type { Evento } from '../../types/api';
+import { eventoService } from '../../services/eventPlusService';
 
-import Header from '../../../components/Header/Header';
-import Footer from '../../../components/Footer/Footer';
-import CardEvento from '../../../components/CardEvento/CardEvento';
+import Header from '../../components/Header/Header';
+import Footer from '../../components/Footer/Footer';
+import CardEvento from '../../components/CardEvento/CardEvento';
 
 import './Eventos.css';
 

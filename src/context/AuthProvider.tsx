@@ -72,7 +72,7 @@ export function AuthProvider({ children }: PropsWithChildren) {
         })
             .catch(() => undefined)
             .finally(() => setCarregandoSessao(false));
-    })
+    }, [])
 
     const perfil = session?.usuario.idTipoUsuarioNavigation?.titulo.toLowerCase() ?? "";
     return (

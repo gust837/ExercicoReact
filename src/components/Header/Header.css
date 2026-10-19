@@ -1,36 +1,34 @@
-/* Header */
-.header{
-    border-bottom: 1px solid var(--color-border);
-    background: var(--color-white);
+@reference "../../index.css";
+
+.header {
+    @apply border-b;
+    border-bottom-color: var(--color-border);
+    background-color: var(--color-white);
 }
 
-.header-conteudo{
+.header-conteudo {
+    @apply min-h-[60px] mx-auto flex justify-between items-center gap-8;
     width: min(1220px, calc(100% - 48px));
-    min-height: 60px;
-    margin: 0 auto;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 32px;
 }
 
-.header img{
-    width: 130px;
+.header img {
+    @apply w-[130px];
 }
 
-.header nav{
-    display: flex;
-    gap: 28px;
+.header nav {
+    @apply flex gap-7 font-medium;
 }
 
-.header a{
-    text-decoration: none;
+.header a {
+    @apply no-underline transition-colors;
     color: var(--color-text-dark);
 }
 
-.header-conteudo button{
-    border: none;
-    background: none;
+.header a:hover {
+    color: var(--color-crimson);
+}
+
+.header-conteudo button {
+    @apply border-0 bg-transparent cursor-pointer;
     color: var(--color-text-dark);
-    cursor: pointer;
 }

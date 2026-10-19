@@ -1,3 +1,5 @@
+@import "tailwindcss";
+
 :root {
   --color-crimson: #CC1540;
   --color-crimson-dark: #A01030;
@@ -15,8 +17,6 @@
 }
 
 *{
-  margin: 0;
-  padding: 0;
   box-sizing: border-box;
   scroll-behavior: smooth;
 }
@@ -52,4 +52,8 @@ img{
 
 a, button, input, select, textarea{
   font: inherit;
+}
+
+h1, h2, h3, h4, h5, h6{
+  font-family: var(--font-primary);
 }

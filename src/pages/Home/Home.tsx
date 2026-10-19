@@ -3,8 +3,8 @@ import type { Evento } from '../../types/api';
 import { eventoService } from '../../services/eventPlusService';
 
 import VisaoImg from '../../assets/image.png';
-import CardEvento from '../../components/CardEvento/CardEvento';
-import Carrossel from '../../components/Carrossel';
+import Carrossel from '../../components/Carrossel/Carrossel';
+import BannerProximosEventos from '../../components/BannerProximosEventos/BannerProximosEventos';
 import Header from '../../components/Header/Header';
 import Footer from '../../components/Footer/Footer';
 import './Home.css';
@@ -13,86 +13,58 @@ function Home() {
     const [eventos, setEventos] = useState<Evento[]>([]);
     const [filtroAtivo, setFiltroAtivo] = useState('Todos');
 
-    // Estado separado só para mandar os mais próximos para o Carrossel
-    const [eventosCarrossel, setEventosCarrossel] = useState<Evento[]>([]);
-
     useEffect(() => {
         async function carregar() {
             try {
-                const dados = await eventoService.listar(); // Usa a rota normal
-                setEventos(dados); 
-                
-                // Lógica do Carrossel: Pega eventos futuros e ordena do mais próximo pro mais longe
-                const futuros = dados
-                    .filter(e => new Date(e.dataEvento) >= new Date())
-                    .sort((a, b) => new Date(a.dataEvento).getTime() - new Date(b.dataEvento).getTime());
-                
-                // Manda apenas os 3 mais próximos para ficar rodando no carrossel
-                setEventosCarrossel(futuros.slice(0, 3));
-
+                const dados = await eventoService.listar();
+                setEventos(dados);
             } catch (error) {
-                console.error("Erro ao carregar os eventos", error);
+                console.error("Erro ao carregar os eventos:", error);
             }
         }
         void carregar();
     }, []);
 
-    // Categorias e Filtros para a lista lá embaixo
-    const categorias = ["Todos", ...new Set(["Programação", "Design", "Tecnologia", ...eventos.map(e => e.idTipoEventoNavigation?.titulo || "Outros")])];
+    // 1. FILTRA E ORDENA APENAS OS EVENTOS QUE VÃO ACONTECER PELA DATA MAIS PRÓXIMA
+    const hoje = new Date(new Date().setHours(0, 0, 0, 0));
+    const proximosEventos = [...eventos]
+        .filter(e => new Date(e.dataEvento) >= hoje)
+        .sort((a, b) => new Date(a.dataEvento).getTime() - new Date(b.dataEvento).getTime());
 
-    const eventosFiltrados = filtroAtivo === "Todos" 
-        ? eventos 
-        : eventos.filter(evento => evento.idTipoEventoNavigation?.titulo === filtroAtivo);
+    // Se no banco não houver eventos futuros, usamos a ordenação geral por data como fallback
+    const listaProximos = proximosEventos.length > 0 
+        ? proximosEventos 
+        : [...eventos].sort((a, b) => new Date(a.dataEvento).getTime() - new Date(b.dataEvento).getTime());
 
     return (
         <>
             <Header />
             <main>
-                {/* 1. O Carrossel agora recebe os eventos que a gente ordenou! */}
-                <Carrossel eventosProximos={eventosCarrossel} />
+                {/* 1. CARROSSEL DO TOPO (DESTAQUES / INSTITUCIONAL) */}
+                <Carrossel id="CarrosselTopo" eventosProximos={eventos} />
 
+                {/* 2. VISÃO */}
                 <section className="home-visao">
                     <div className='home-visao-container'>
                         <img src={VisaoImg} alt="Pessoas confraternizando" />
                         <div className="home-visao-texto">
                             <h1>Visão</h1>
-                            <p>A EventPlus organiza eventos e informações em um interface direta,
-                                facilitando a consulta da agenda e a participação do usuários.</p>
+                            <p>A EventPlus organiza eventos e informações em uma interface direta,
+                                facilitando a consulta da agenda e a participação dos usuários.</p>
                         </div>
                     </div>
                 </section>
 
-                {/* 2. Sua sessão de Eventos Restaurada e Conectada na API! */}
+                {/* 3. SEÇÃO PRÓXIMOS EVENTOS COM SEU BANNER PRÓPRIO */}
                 <section id='eventos' className="home-eventos">
                     <div className="home-evento-titulo">
                         <h2>Próximos eventos</h2>
                         <hr />
                     </div>
 
-                    <div className="home-filtros">
-                        {categorias.map(categoria => (
-                            <button 
-                                key={categoria}
-                                className={`btn-filtro ${filtroAtivo === categoria ? 'ativo' : ''}`}
-                                onClick={() => setFiltroAtivo(categoria)}
-                            >
-                                {categoria}
-                            </button>
-                        ))}
-                    </div>
+                    {/* BANNER PRÓPRIO EXCLUSIVO DOS EVENTOS MAIS PRÓXIMOS POR DATA */}
+                    <BannerProximosEventos  eventos={listaProximos} />
 
-                    <div className="home-eventos-lista">
-                        {eventosFiltrados.map((evento) => (
-                            <CardEvento
-                                key={evento.idEvento}
-                                id={evento.idEvento}
-                                titulo={evento.nomeEvento}
-                                imagem={evento.imagemUrl}
-                                descricao={evento.descricao}
-                                categoria={evento.idTipoEventoNavigation?.titulo || "Evento"}
-                            />
-                        ))}
-                    </div>
                 </section>
 
                 <section id='contato' className="home-contato">

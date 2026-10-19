@@ -1,6 +1,8 @@
-.home-footer{
-    padding: 24px;
-    text-align: center;
-    background: var(--color-white);
+@reference "../../index.css";
+
+.home-footer {
+    @apply p-6 text-center border-t;
+    border-top-color: var(--color-border);
+    background-color: var(--color-white);
     color: var(--color-text-dark);
 }

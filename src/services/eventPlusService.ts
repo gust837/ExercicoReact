@@ -1,6 +1,6 @@
 import { axiosInstance } from "./api";
 
-import { type Presenca, type Evento, type PresencaPayload, type LoginPayload, type LoginResponse, type Usuario } from "../types/api";
+import type {  Presenca,  Evento,  PresencaPayload,  LoginPayload,  LoginResponse,  Usuario,  Comentario,  ComentarioPayload,  MensagemModeracao } from "../types/api";
 
 export const authService = {
     async login(payload: LoginPayload) {
@@ -26,10 +26,22 @@ export const eventoService = {
     }
 }
 
+export const comentarioService = {
+    async listarPorEvento(idEvento: string){
+        const {data} = await axiosInstance.get<Comentario[]>("Comentario");
+        return data.filter(c => c.idEvento === idEvento);
+    },
+
+    async cadastrar(payload: ComentarioPayload){
+        const {data} = await axiosInstance.post<Comentario | MensagemModeracao>("Comentario", payload);
+        return data;
+    }
+}
+
 export const presencaService = {
     async listarPorUsuario(idUsuario: string){
-        const {data} = await axiosInstance.get<Presenca[]>(`Presenca/usuario/${idUsuario}`);
-        return data;
+        const {data} = await axiosInstance.get<Presenca[]>("Presenca");
+        return data.filter(p => p.idUsuario === idUsuario);
     },
 
     async cadastrar(payload: PresencaPayload){

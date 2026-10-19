@@ -1,9 +1,9 @@
 import { Link } from "react-router-dom";
 
 import imagemPadrao from "../../assets/banner-3.png";
-import "./CardEvento.css"
+import "./CardEvento.css";
 
-interface CardEventoProps{
+interface CardEventoProps {
     id: string;
     imagem?: string | null;
     categoria: string;
@@ -11,9 +11,9 @@ interface CardEventoProps{
     descricao: string;
 }
 
-function CardEvento({id, imagem, categoria, titulo, descricao} : CardEventoProps) {
+function CardEvento({ id, imagem, categoria, titulo, descricao }: CardEventoProps) {
     return (
-        <article className='home-evento-card'>
+        <article className="home-evento-card">
             <img src={imagem || imagemPadrao} alt={`Imagem do evento ${titulo}`} />
             <span>{categoria || "Evento"}</span>
             <div className="home-evento-card-info">
@@ -22,7 +22,7 @@ function CardEvento({id, imagem, categoria, titulo, descricao} : CardEventoProps
                 <Link to={`/eventos/${id}`}>Ver evento</Link>
             </div>
         </article>
-    )
+    );
 }
 
 export default CardEvento;

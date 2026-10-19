@@ -1,0 +1,107 @@
+@reference "../../index.css";
+
+.banner-proximos-container {
+    @apply w-full my-8 rounded-2xl overflow-hidden shadow-2xl;
+}
+
+.proximo-card {
+    @apply relative w-full min-h-[420px] md:min-h-[380px] flex items-center overflow-hidden;
+    background-color: var(--color-text-dark);
+}
+
+/* Animação idêntica ao Carrossel */
+.proximo-slide {
+    @apply absolute inset-0 flex items-center transition-opacity duration-700 ease-in-out;
+}
+
+.proximo-slide.ativo {
+    @apply opacity-100 z-10;
+}
+
+.proximo-slide.inativo {
+    @apply opacity-0 z-0 pointer-events-none;
+}
+
+.proximo-slide .proximo-card-conteudo {
+    @apply transition-transform duration-700 ease-in-out will-change-transform;
+}
+
+.proximo-slide.ativo .proximo-card-conteudo {
+    @apply translate-x-0;
+}
+
+.proximo-slide.inativo .proximo-card-conteudo {
+    @apply translate-x-6;
+}
+
+.proximo-card-bg {
+    @apply absolute -inset-6 w-[140%] h-[140%] object-cover blur-xl brightness-35 pointer-events-none;
+}
+
+.proximo-card-conteudo {
+    @apply relative z-10 w-full px-6 py-6 md:px-14 md:py-8 flex flex-col md:flex-row gap-6 md:gap-10 items-center;
+}
+
+.proximo-card-imagem {
+    @apply relative w-full md:w-[45%] h-[200px] md:h-[280px] rounded-xl overflow-hidden shadow-2xl shrink-0;
+}
+
+.proximo-card-imagem img {
+    @apply w-full h-full object-cover;
+}
+
+.proximo-badge-data {
+    @apply absolute bottom-3 left-3 px-3.5 py-1.5 rounded-full text-xs font-semibold backdrop-blur-sm;
+    background-color: rgba(26, 26, 46, 0.8);
+    color: var(--color-white);
+}
+
+.proximo-card-info {
+    @apply flex-1 flex flex-col items-start gap-3;
+    color: var(--color-white);
+}
+
+.proximo-tag-categoria {
+    @apply px-3.5 py-1 rounded-full text-xs font-bold uppercase;
+    background-color: var(--color-crimson);
+    color: var(--color-white);
+}
+
+.proximo-card-info h3 {
+    @apply text-2xl md:text-3xl font-bold m-0;
+    color: var(--color-white);
+}
+
+.proximo-card-info p {
+    @apply text-sm md:text-base leading-relaxed line-clamp-3 m-0;
+    color: var(--color-off-white);
+}
+
+.btn-conectar-evento {
+    @apply mt-2 px-6 py-2.5 rounded-lg font-semibold transition transform hover:-translate-y-0.5;
+    background-color: var(--color-crimson);
+    color: var(--color-white);
+}
+
+.btn-conectar-evento:hover {
+    background-color: var(--color-crimson-dark);
+    color: var(--color-white);
+}
+
+.proximo-seta {
+    @apply absolute top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full flex items-center justify-center transition cursor-pointer border-none;
+    background-color: rgba(26, 26, 46, 0.6);
+    color: var(--color-white);
+}
+
+.proximo-seta:hover {
+    background-color: var(--color-crimson);
+}
+
+.proximo-seta.esquerda {
+    @apply left-3;
+}
+
+.proximo-seta.direita {
+    @apply right-3;
+}

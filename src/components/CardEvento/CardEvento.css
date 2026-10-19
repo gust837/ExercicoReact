@@ -1,63 +1,47 @@
-.home-evento-card{
-    border: 1px solid var(--color-crimson-dark);
-    border-radius: 12px;
-    overflow: hidden;
-    max-width: 300px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+@reference "../../index.css";
 
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.home-evento-card img{
-    width: 100%;
-    aspect-ratio: 16 / 9;
-    object-fit: cover;
-}
-
-.home-evento-card span{
-    background-color: var(--color-category);
-    border-radius: 12px;
-    padding: 0 10px;
-    display: inline-block;
-    width: 50%;
-    text-align: center;
-}
-
-.home-evento-card-info{
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: center;
-    text-align: center;
-    height: 70%;
-}
-
-.home-evento-card-info p{
-    min-height: 70px;
-}
-
-.home-evento-card a{
-    background: none;
+.home-evento-card {
+    @apply w-full max-w-[300px] rounded-[14px] overflow-hidden flex flex-col justify-between pb-4 border-2 transition-all duration-300 ease-in-out hover:-translate-y-2 hover:shadow-xl;
+    border-color: var(--color-crimson);
     background-color: var(--color-white);
-    color: var(--color-crimson-dark);
-    border: none;
-    cursor: pointer;
-    font-weight: 500;
-    transition: transform 0.2s ease, opacity 0.2s ease;
+    font-family: var(--font-primary);
 }
 
-.home-evento-card a:hover{
-    opacity: 0.7;
-    transform: scale(1.05);
+.home-evento-card img {
+    @apply w-full aspect-video object-cover;
 }
 
-.home-evento-card h3, .home-evento-card p, .home-evento-card span, .home-evento-card button{
-    margin: 12px 16px;
+.home-evento-card span {
+    @apply text-xs font-semibold rounded-full px-3.5 py-1 mt-3.5 mb-1 mx-auto inline-block text-center;
+    font-family: var(--font-primary);
+    color: var(--color-navy);
+    background-color: var(--color-category);
 }
 
-.home-evento-card:hover {
-    transform: translateY(-8px);
-    box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.15);
+.home-evento-card-info {
+    @apply flex flex-col justify-between items-center text-center flex-1 px-4 py-2 gap-2.5;
+}
+
+.home-evento-card-info h3 {
+    @apply text-lg font-bold mt-1 mb-0 leading-snug;
+    font-family: var(--font-primary);
+    color: var(--color-text-dark);
+}
+
+.home-evento-card-info p {
+    @apply text-sm font-normal leading-relaxed m-0 min-h-[60px];
+    font-family: var(--font-primary);
+    color: var(--color-text-gray);
+}
+
+.home-evento-card a {
+    @apply px-5 py-2 rounded-full text-sm font-semibold mt-2 transition-all duration-200 hover:scale-105;
+    font-family: var(--font-primary);
+    background-color: var(--color-crimson);
+    color: var(--color-white);
+}
+
+.home-evento-card a:hover {
+    background-color: var(--color-crimson-dark);
+    color: var(--color-white);
 }

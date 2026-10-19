@@ -1,0 +1,39 @@
+@reference "../../index.css";
+
+.pagina-eventos {
+    @apply mx-auto py-14 min-h-[75vh];
+    width: min(1200px, calc(100% - 48px));
+    font-family: var(--font-primary);
+}
+
+.pagina-eventos h2 {
+    @apply text-3xl font-bold text-center;
+    font-family: var(--font-primary);
+    color: var(--color-text-dark);
+}
+
+.linha-titulo {
+    @apply w-20 mt-3 mb-9 mx-auto border-0 border-t-[3px];
+    border-top-color: var(--color-crimson);
+}
+
+.filtros-container {
+    @apply flex justify-center flex-wrap gap-3.5 mb-10;
+}
+
+.btn-filtro {
+    @apply bg-transparent px-6 py-2 rounded-full font-semibold border-2 cursor-pointer transition-all duration-300 ease-in-out hover:scale-105;
+    font-family: var(--font-primary);
+    color: var(--color-crimson);
+    border-color: var(--color-crimson);
+}
+
+.btn-filtro.ativo {
+    background-color: var(--color-crimson);
+    color: var(--color-white);
+}
+
+.lista-grid-eventos {
+    @apply grid justify-center gap-8;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 300px));
+}

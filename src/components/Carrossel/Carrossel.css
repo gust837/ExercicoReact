@@ -1,0 +1,73 @@
+@reference "../../index.css";
+
+.carrossel-container {
+    @apply relative w-full h-[320px] md:h-[480px] overflow-hidden select-none;
+    background-color: var(--color-text-dark);
+}
+
+/* Animação idêntica ao BannerProximosEventos */
+.carrossel-slide {
+    @apply absolute inset-0 flex items-center justify-center transition-opacity duration-700 ease-in-out;
+}
+
+.carrossel-slide.ativo {
+    @apply opacity-100 z-10;
+}
+
+.carrossel-slide.inativo {
+    @apply opacity-0 z-0 pointer-events-none;
+}
+
+.carrossel-slide .carousel-banner-main {
+    @apply transition-transform duration-700 ease-in-out will-change-transform;
+}
+
+.carrossel-slide.ativo .carousel-banner-main {
+    @apply translate-x-0;
+}
+
+.carrossel-slide.inativo .carousel-banner-main {
+    @apply translate-x-6;
+}
+
+.carousel-bg-blur {
+    @apply absolute -inset-4 w-[120%] h-[120%] object-cover blur-xl brightness-45 scale-110 pointer-events-none;
+}
+
+.carousel-banner-main {
+    @apply relative z-10 max-w-[90%] max-h-[88%] w-auto h-auto object-contain rounded-lg shadow-2xl;
+}
+
+.carousel-legenda {
+    @apply absolute z-20 bottom-6 left-1/2 -translate-x-1/2 backdrop-blur-md px-7 py-3.5 rounded-xl text-center max-w-[85%] shadow-xl border-l-4;
+    background-color: rgba(26, 26, 46, 0.85);
+    border-left-color: var(--color-crimson);
+}
+
+.carousel-legenda h3 {
+    @apply text-lg md:text-2xl font-bold mb-1;
+    color: var(--color-white);
+}
+
+.carousel-legenda p {
+    @apply text-xs md:text-sm font-medium m-0;
+    color: var(--color-off-white);
+}
+
+.carrossel-seta {
+    @apply absolute top-1/2 -translate-y-1/2 z-30 w-11 h-11 rounded-full flex items-center justify-center transition cursor-pointer backdrop-blur-sm border-none;
+    background-color: rgba(26, 26, 46, 0.6);
+    color: var(--color-white);
+}
+
+.carrossel-seta:hover {
+    background-color: var(--color-crimson);
+}
+
+.carrossel-seta.esquerda {
+    @apply left-4;
+}
+
+.carrossel-seta.direita {
+    @apply right-4;
+}

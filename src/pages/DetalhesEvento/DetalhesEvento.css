@@ -1,0 +1,239 @@
+@reference "../../index.css";
+
+.detalhes-evento-pagina {
+    @apply mx-auto mt-12 mb-20 grid grid-cols-1 lg:grid-cols-[1fr_360px] gap-10 items-start;
+    width: min(1200px, calc(100% - 48px));
+}
+
+.detalhes-evento-conteudo {
+    @apply flex flex-col gap-6;
+}
+
+.detalhes-banner-wrapper {
+    @apply w-full h-[260px] lg:h-[400px] rounded-2xl overflow-hidden shadow-lg;
+    background-color: var(--color-text-dark);
+}
+
+.detalhes-banner {
+    @apply w-full h-full object-cover;
+}
+
+.detalhes-titulo {
+    @apply text-3xl lg:text-4xl font-bold m-0;
+    color: var(--color-text-dark);
+}
+
+.detalhes-abas {
+    @apply flex gap-3 pb-3 border-b-2;
+    border-bottom-color: var(--color-border);
+}
+
+.aba-btn {
+    @apply bg-transparent px-5 py-2 rounded-full font-semibold border-2 cursor-pointer transition-all duration-200;
+    border-color: var(--color-crimson);
+    color: var(--color-crimson);
+}
+
+.aba-btn.ativa {
+    background-color: var(--color-crimson);
+    color: var(--color-white);
+}
+
+.detalhes-aba-painel {
+    @apply py-2;
+}
+
+.detalhes-descricao {
+    @apply text-base leading-relaxed whitespace-pre-line;
+    color: var(--color-text-gray);
+}
+
+.detalhes-comentarios h2 {
+    @apply text-2xl font-bold mb-4;
+    color: var(--color-text-dark);
+}
+
+.sem-comentarios {
+    @apply italic;
+    color: var(--color-text-gray);
+}
+
+.lista-comentarios {
+    @apply list-none flex flex-col gap-3.5 p-0;
+}
+
+.item-comentario {
+    @apply px-4 py-3.5 rounded-lg flex flex-col gap-1 border-l-4;
+    background-color: var(--color-off-white);
+    border-left-color: var(--color-crimson);
+}
+
+.item-comentario strong {
+    @apply text-sm font-bold;
+    color: var(--color-text-dark);
+}
+
+.item-comentario span {
+    @apply text-xs;
+    color: var(--color-text-light);
+}
+
+.item-comentario p {
+    @apply mt-1.5 m-0;
+    color: var(--color-text-gray);
+}
+
+/* Formulário de Novo Comentário */
+.form-comentario {
+    @apply flex flex-col gap-3 mb-6 p-4 rounded-xl border;
+    background-color: var(--color-off-white);
+    border-color: var(--color-border);
+}
+
+.form-comentario textarea {
+    @apply w-full p-3 rounded-lg border text-sm resize-y outline-none transition-colors;
+    border-color: var(--color-border);
+    background-color: var(--color-white);
+    color: var(--color-text-dark);
+    font-family: var(--font-primary);
+}
+
+.form-comentario textarea:focus {
+    border-color: var(--color-crimson);
+}
+
+.form-comentario-acoes {
+    @apply flex justify-end;
+}
+
+.form-comentario-acoes .botao {
+    @apply px-5 py-2.5 rounded-lg font-semibold border-0 cursor-pointer transition-colors;
+    background-color: var(--color-crimson);
+    color: var(--color-white);
+}
+
+.form-comentario-acoes .botao:hover:not(:disabled) {
+    background-color: var(--color-crimson-dark);
+}
+
+.aviso-inscricao-comentario {
+    @apply px-4 py-3 rounded-lg text-sm mb-5 border-l-4;
+    background-color: var(--color-off-white);
+    border-left-color: var(--color-crimson);
+    color: var(--color-text-gray);
+}
+
+/* Card Lateral Direito */
+.detalhes-evento-card-info {
+    @apply rounded-2xl p-7 shadow-xl flex flex-col gap-4 lg:sticky lg:top-6 border;
+    background-color: var(--color-white);
+    border-color: var(--color-border);
+}
+
+.detalhes-evento-card-info h2 {
+    @apply text-xl font-bold m-0;
+    color: var(--color-text-dark);
+}
+
+.detalhes-evento-card-info hr {
+    @apply border-0 border-t-2 w-14 -mt-2 mb-1;
+    border-top-color: var(--color-crimson);
+}
+
+.info-item {
+    @apply flex items-center gap-3 text-sm font-medium;
+    color: var(--color-text-gray);
+}
+
+.info-item img {
+    @apply w-5 h-5 object-contain;
+}
+
+.detalhes-evento-card-info .botao {
+    @apply w-full px-5 py-3 rounded-lg font-semibold text-base cursor-pointer border-0 mt-2 transition-all duration-200 hover:-translate-y-0.5 disabled:opacity-65 disabled:cursor-not-allowed;
+    background-color: var(--color-crimson);
+    color: var(--color-white);
+}
+
+.detalhes-evento-card-info .botao:hover:not(:disabled) {
+    background-color: var(--color-crimson-dark);
+}
+
+.detalhes-evento-card-info .detalhes-evento-cancelar {
+    @apply bg-transparent border-2;
+    border-color: var(--color-crimson);
+    color: var(--color-crimson);
+}
+
+.detalhes-evento-card-info .detalhes-evento-cancelar:hover:not(:disabled) {
+    background-color: var(--color-crimson);
+    color: var(--color-white);
+}
+
+/* Modal de Confirmação com Animação de Entrada e Saída */
+.modal-overlay {
+    @apply fixed inset-0 z-50 flex items-center justify-center backdrop-blur-sm p-4 transition-opacity duration-300 ease-in-out;
+    background-color: rgba(26, 26, 46, 0.65);
+}
+
+.modal-overlay.aberto {
+    @apply opacity-100 pointer-events-auto;
+}
+
+.modal-overlay.fechado {
+    @apply opacity-0 pointer-events-none;
+}
+
+.modal-confirmacao {
+    @apply rounded-2xl max-w-md w-full p-7 shadow-2xl flex flex-col items-center text-center gap-4 border-2 transition-all duration-300 ease-in-out;
+    background-color: var(--color-white);
+    border-color: var(--color-crimson);
+}
+
+.modal-overlay.aberto .modal-confirmacao {
+    @apply scale-100 translate-y-0 opacity-100;
+}
+
+.modal-overlay.fechado .modal-confirmacao {
+    @apply scale-90 translate-y-4 opacity-0;
+}
+
+.modal-icone {
+    @apply w-14 h-14 rounded-full flex items-center justify-center text-2xl font-bold border-2;
+    background-color: var(--color-off-white);
+    color: var(--color-crimson);
+    border-color: var(--color-crimson);
+}
+
+.modal-confirmacao h3 {
+    @apply text-xl font-bold m-0;
+    color: var(--color-text-dark);
+}
+
+.modal-confirmacao p {
+    @apply text-sm leading-relaxed m-0;
+    color: var(--color-text-gray);
+}
+
+.modal-confirmacao .confirmar-botoes {
+    @apply flex gap-3 w-full mt-2;
+}
+
+.confirmar-botoes .botao,
+.btn-manter-inscricao {
+    @apply flex-1 mt-0 px-3.5 py-2.5 text-sm rounded-lg font-semibold cursor-pointer transition-opacity hover:opacity-85;
+}
+
+.btn-manter-inscricao {
+    @apply border;
+    background-color: var(--color-off-white);
+    border-color: var(--color-border);
+    color: var(--color-text-dark);
+}
+
+.detalhe-evento-mensagem {
+    @apply px-3.5 py-2.5 rounded-lg text-sm font-medium border-l-4;
+    background-color: var(--color-off-white);
+    border-left-color: var(--color-crimson);
+    color: var(--color-text-dark);
+}
