@@ -1,8 +1,7 @@
 @reference "../../index.css";
 
 .carrossel-container {
-    @apply relative w-full h-[320px] md:h-[480px] overflow-hidden select-none;
-    background-color: var(--color-text-dark);
+    @apply relative w-full h-[320px] md:h-[480px] overflow-hidden select-none bg-text-dark;
 }
 
 /* Animação idêntica ao BannerProximosEventos */
@@ -39,29 +38,19 @@
 }
 
 .carousel-legenda {
-    @apply absolute z-20 bottom-6 left-1/2 -translate-x-1/2 backdrop-blur-md px-7 py-3.5 rounded-xl text-center max-w-[85%] shadow-xl border-l-4;
-    background-color: rgba(26, 26, 46, 0.85);
-    border-left-color: var(--color-crimson);
+    @apply absolute z-20 bottom-6 left-1/2 -translate-x-1/2 backdrop-blur-md px-7 py-3.5 rounded-xl text-center max-w-[85%] shadow-xl border-l-4 border-l-crimson bg-text-dark/85;
 }
 
 .carousel-legenda h3 {
-    @apply text-lg md:text-2xl font-bold mb-1;
-    color: var(--color-white);
+    @apply text-lg md:text-2xl font-bold mb-1 text-white;
 }
 
 .carousel-legenda p {
-    @apply text-xs md:text-sm font-medium m-0;
-    color: var(--color-off-white);
+    @apply text-xs md:text-sm font-medium m-0 text-off-white;
 }
 
 .carrossel-seta {
-    @apply absolute top-1/2 -translate-y-1/2 z-30 w-11 h-11 rounded-full flex items-center justify-center transition cursor-pointer backdrop-blur-sm border-none;
-    background-color: rgba(26, 26, 46, 0.6);
-    color: var(--color-white);
-}
-
-.carrossel-seta:hover {
-    background-color: var(--color-crimson);
+    @apply absolute top-1/2 -translate-y-1/2 z-30 w-11 h-11 rounded-full flex items-center justify-center transition cursor-pointer backdrop-blur-sm border-none bg-text-dark/60 text-white hover:bg-crimson;
 }
 
 .carrossel-seta.esquerda {

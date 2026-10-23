@@ -8,8 +8,7 @@
 }
 
 .home-visao {
-    @apply flex;
-    background-color: var(--color-crimson);
+    @apply flex bg-crimson;
 }
 
 .home-visao-container {
@@ -21,8 +20,7 @@
 }
 
 .home-visao-texto {
-    @apply max-w-[330px] flex flex-col items-center text-center gap-4;
-    color: var(--color-white);
+    @apply max-w-[330px] flex flex-col items-center text-center gap-4 text-white;
 }
 
 .home-visao-texto h1,
@@ -32,18 +30,15 @@
 }
 
 .home-evento-titulo {
-    @apply flex flex-col w-full items-center;
-    color: var(--color-text-dark);
+    @apply flex flex-col w-full items-center text-text-dark;
 }
 
 .home-evento-titulo hr {
-    @apply border-0 border-t-[3px] w-20 mt-1 mb-4;
-    border-top-color: var(--color-crimson);
+    @apply border-0 border-t-[3px] border-t-crimson w-20 mt-1 mb-4;
 }
 
 .home-contato {
-    @apply flex flex-col items-center text-center w-full;
-    background-color: var(--color-crimson);
+    @apply flex flex-col items-center text-center w-full bg-crimson;
 }
 
 .home-contato-container {
@@ -55,17 +50,15 @@
 }
 
 .home-contato-titulo h2 {
-    color: var(--color-white);
+    @apply text-white;
 }
 
 .home-contato hr {
-    @apply border-0 border-t-2 min-w-[150px] mt-1;
-    border-top-color: var(--color-white);
+    @apply border-0 border-t-2 border-t-white min-w-[150px] mt-1;
 }
 
 .home-contato-conteudo {
-    @apply flex flex-col md:flex-row justify-between items-center text-center gap-8 mt-12 w-full md:w-3/4;
-    color: var(--color-white);
+    @apply flex flex-col md:flex-row justify-between items-center text-center gap-8 mt-12 w-full md:w-3/4 text-white;
 }
 
 .home-contato-conteudo iframe {

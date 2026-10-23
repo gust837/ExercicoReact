@@ -1,8 +1,5 @@
 @reference "../../index.css";
 
 .home-footer {
-    @apply p-6 text-center border-t;
-    border-top-color: var(--color-border);
-    background-color: var(--color-white);
-    color: var(--color-text-dark);
+    @apply p-6 text-center border-t border-t-border bg-white text-text-dark;
 }

@@ -1,20 +1,16 @@
 @reference "../../index.css";
 
 .pagina-eventos {
-    @apply mx-auto py-14 min-h-[75vh];
+    @apply mx-auto py-14 min-h-[75vh] font-primary;
     width: min(1200px, calc(100% - 48px));
-    font-family: var(--font-primary);
 }
 
 .pagina-eventos h2 {
-    @apply text-3xl font-bold text-center;
-    font-family: var(--font-primary);
-    color: var(--color-text-dark);
+    @apply text-3xl font-bold text-center font-primary text-text-dark;
 }
 
 .linha-titulo {
-    @apply w-20 mt-3 mb-9 mx-auto border-0 border-t-[3px];
-    border-top-color: var(--color-crimson);
+    @apply w-20 mt-3 mb-9 mx-auto border-0 border-t-[3px] border-t-crimson;
 }
 
 .filtros-container {
@@ -22,18 +18,22 @@
 }
 
 .btn-filtro {
-    @apply bg-transparent px-6 py-2 rounded-full font-semibold border-2 cursor-pointer transition-all duration-300 ease-in-out hover:scale-105;
-    font-family: var(--font-primary);
-    color: var(--color-crimson);
-    border-color: var(--color-crimson);
+    @apply bg-transparent px-6 py-2 rounded-full font-semibold font-primary border-2 border-crimson text-crimson cursor-pointer transition-all duration-300 ease-in-out hover:scale-105;
 }
 
 .btn-filtro.ativo {
-    background-color: var(--color-crimson);
-    color: var(--color-white);
+    @apply bg-crimson text-white;
 }
 
 .lista-grid-eventos {
     @apply grid justify-center gap-8;
     grid-template-columns: repeat(auto-fill, minmax(280px, 300px));
+}
+
+.eventos-estado {
+    @apply text-center text-base py-10 text-text-gray;
+}
+
+.eventos-estado.erro {
+    @apply text-crimson font-semibold;
 }

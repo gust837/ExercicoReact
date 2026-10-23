@@ -1,6 +1,6 @@
 @import "tailwindcss";
 
-:root {
+@theme {
   --color-crimson: #CC1540;
   --color-crimson-dark: #A01030;
   --color-navy: #2D2B6B;
@@ -16,9 +16,12 @@
   --font-primary: 'Poppins', sans-serif;
 }
 
-*{
-  box-sizing: border-box;
+html {
   scroll-behavior: smooth;
+}
+
+* {
+  box-sizing: border-box;
 }
 
 #root {
@@ -26,7 +29,6 @@
   max-width: 100%;
   margin: 0;
   text-align: left;
-  border-inline: none;
   min-height: 100svh;
   display: flex;
   flex-direction: column;
@@ -37,23 +39,23 @@ a {
   color: inherit;
 }
 
-body{
+body {
   min-width: 320px;
   min-height: 100vh;
-  font-family: "Poppins", Arial, sans-serif;
-  color: #151515;
-  background: #ffffff;
+  font-family: var(--font-primary);
+  color: var(--color-text-dark);
+  background: var(--color-white);
 }
 
-img{
+img {
   display: block;
   max-width: 100%;
 }
 
-a, button, input, select, textarea{
+a, button, input, select, textarea {
   font: inherit;
 }
 
-h1, h2, h3, h4, h5, h6{
+h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-primary);
 }

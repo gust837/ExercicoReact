@@ -1,9 +1,7 @@
 @reference "../../index.css";
 
 .login-pagina {
-    @apply min-h-screen w-full flex flex-col justify-center items-center gap-8 p-6;
-    background-color: var(--color-off-white);
-    font-family: var(--font-primary);
+    @apply min-h-screen w-full flex flex-col justify-center items-center gap-8 p-6 bg-white font-primary;
 }
 
 .login-pagina img {
@@ -11,9 +9,7 @@
 }
 
 .login-form {
-    @apply w-full max-w-[400px] rounded-2xl px-8 py-9 flex flex-col gap-5 border-2 shadow-xl;
-    background-color: var(--color-white);
-    border-color: var(--color-crimson);
+    @apply w-full max-w-[400px] rounded-2xl px-8 py-9 flex flex-col gap-5 bg-white;
 }
 
 .login-form > div {
@@ -21,38 +17,17 @@
 }
 
 .login-form label {
-    @apply text-sm font-semibold;
-    font-family: var(--font-primary);
-    color: var(--color-text-dark);
+    @apply text-sm font-semibold font-primary text-text-dark;
 }
 
 .login-form .campo {
-    @apply w-full px-3.5 py-3 rounded-lg border text-sm outline-none transition-colors;
-    border-color: var(--color-border);
-    background-color: var(--color-off-white);
-    color: var(--color-text-dark);
-    font-family: var(--font-primary);
-}
-
-.login-form .campo:focus {
-    border-color: var(--color-crimson);
-    background-color: var(--color-white);
+    @apply w-full px-3.5 py-3 rounded-lg border border-border bg-off-white text-text-dark font-primary text-sm outline-none transition-colors focus:border-crimson focus:bg-white;
 }
 
 .login-form .botao {
-    @apply w-full mt-2 px-5 py-3 border-0 rounded-lg text-base font-semibold cursor-pointer transition-all duration-200 hover:-translate-y-0.5 disabled:opacity-65 disabled:cursor-not-allowed;
-    background-color: var(--color-crimson);
-    color: var(--color-white);
-    font-family: var(--font-primary);
-}
-
-.login-form .botao:hover:not(:disabled) {
-    background-color: var(--color-crimson-dark);
+    @apply w-full mt-2 px-5 py-3 border-0 rounded-lg text-base font-semibold font-primary bg-crimson text-white cursor-pointer transition-all duration-200 hover:-translate-y-0.5 hover:enabled:bg-crimson-dark disabled:opacity-65 disabled:cursor-not-allowed;
 }
 
 .login-erro {
-    @apply px-3.5 py-2.5 rounded-lg text-sm font-semibold text-center m-0 border-l-4;
-    background-color: var(--color-off-white);
-    border-left-color: var(--color-crimson);
-    color: var(--color-crimson-dark);
+    @apply px-3.5 py-2.5 rounded-lg text-sm font-semibold text-center m-0 border-l-4 border-l-crimson bg-off-white text-crimson-dark;
 }

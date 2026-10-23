@@ -1,6 +1,7 @@
-import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import type { Evento } from "../../types/api";
+import { useCarrossel } from "../../hooks/useCarrossel";
+import { formatarDataLonga } from "../../utils/formatarData";
 import bannerPadrao from "../../assets/banner-1.png";
 import "./BannerProximosEventos.css";
 
@@ -9,43 +10,24 @@ interface BannerProximosEventosProps {
 }
 
 function BannerProximosEventos({ eventos }: BannerProximosEventosProps) {
-    const [indiceAtivo, setIndiceAtivo] = useState(0);
     const total = eventos.length;
-
-    useEffect(() => {
-        if (total <= 1) return;
-        const timer = window.setInterval(() => {
-            setIndiceAtivo((atual) => (atual + 1) % total);
-        }, 6000);
-        return () => window.clearInterval(timer);
-    }, [total]);
+    const { indice, anterior, proximo } = useCarrossel(total, 6000);
 
     if (total === 0) return null;
 
-    function anterior() {
-        setIndiceAtivo((atual) => (atual - 1 + total) % total);
-    }
-
-    function proximo() {
-        setIndiceAtivo((atual) => (atual + 1) % total);
-    }
-
     return (
-        <div className="banner-proximos-container">
+        <div className="banner-proximos-container" aria-roledescription="carrossel" aria-label="Próximos eventos">
             <div className="proximo-card">
                 {eventos.map((evento, index) => {
                     const imagemSrc = evento.imagemUrl || bannerPadrao;
-                    const ativo = index === indiceAtivo;
-                    const dataFormatada = new Date(evento.dataEvento).toLocaleDateString("pt-BR", {
-                        day: "2-digit",
-                        month: "long",
-                        year: "numeric"
-                    });
+                    const ativo = index === indice;
+                    const dataFormatada = formatarDataLonga(evento.dataEvento);
 
                     return (
                         <div
                             key={evento.idEvento}
                             className={`proximo-slide ${ativo ? "ativo" : "inativo"}`}
+                            aria-hidden={!ativo}
                         >
                             <img src={imagemSrc} className="proximo-card-bg" alt="" aria-hidden="true" />
 
@@ -73,8 +55,8 @@ function BannerProximosEventos({ eventos }: BannerProximosEventosProps) {
 
                 {total > 1 && (
                     <>
-                        <button type="button" onClick={anterior} className="proximo-seta esquerda">❮</button>
-                        <button type="button" onClick={proximo} className="proximo-seta direita">❯</button>
+                        <button type="button" onClick={anterior} className="proximo-seta esquerda" aria-label="Evento anterior">❮</button>
+                        <button type="button" onClick={proximo} className="proximo-seta direita" aria-label="Próximo evento">❯</button>
                     </>
                 )}
             </div>

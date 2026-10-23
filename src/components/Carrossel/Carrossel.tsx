@@ -1,52 +1,41 @@
-import { useEffect, useState } from "react";
 import type { Evento } from "../../types/api";
+import { useCarrossel } from "../../hooks/useCarrossel";
+import { formatarDataCurta } from "../../utils/formatarData";
 import bannerPadrao from "../../assets/banner-1.png";
 import "./Carrossel.css";
 
 interface CarrosselProps {
-    eventosProximos: Evento[];
+    eventos: Evento[];
     id?: string;
 }
 
-function Carrossel({ eventosProximos, id = "carrosselTopo" }: CarrosselProps) {
-    const [indiceAtivo, setIndiceAtivo] = useState(0);
-    const total = eventosProximos.length;
-
-    useEffect(() => {
-        if (total <= 1) return;
-        const timer = window.setInterval(() => {
-            setIndiceAtivo((atual) => (atual + 1) % total);
-        }, 5000);
-        return () => window.clearInterval(timer);
-    }, [total]);
-
-    function anterior() {
-        setIndiceAtivo((atual) => (atual - 1 + total) % total);
-    }
-
-    function proximo() {
-        setIndiceAtivo((atual) => (atual + 1) % total);
-    }
+function Carrossel({ eventos, id = "carrosselTopo" }: CarrosselProps) {
+    const total = eventos.length;
+    const { indice, anterior, proximo } = useCarrossel(total, 5000);
 
     return (
-        <section id={id} className="carrossel-container">
+        <section id={id} className="carrossel-container" aria-roledescription="carrossel" aria-label="Destaques">
             {total === 0 ? (
                 <div className="carrossel-slide ativo">
                     <img src={bannerPadrao} className="carousel-banner-main" alt="Banner padrão" />
                 </div>
             ) : (
-                eventosProximos.map((evento, index) => {
+                eventos.map((evento, index) => {
                     const imagemSrc = evento.imagemUrl || bannerPadrao;
-                    const ativo = index === indiceAtivo;
+                    const ativo = index === indice;
 
                     return (
-                        <div key={evento.idEvento} className={`carrossel-slide ${ativo ? "ativo" : "inativo"}`}>
+                        <div
+                            key={evento.idEvento}
+                            className={`carrossel-slide ${ativo ? "ativo" : "inativo"}`}
+                            aria-hidden={!ativo}
+                        >
                             <img src={imagemSrc} className="carousel-bg-blur" alt="" aria-hidden="true" />
                             <img src={imagemSrc} className="carousel-banner-main" alt={`Banner do evento ${evento.nomeEvento}`} />
 
                             <div className="carousel-legenda">
                                 <h3>{evento.nomeEvento}</h3>
-                                <p>{new Date(evento.dataEvento).toLocaleDateString("pt-BR")}</p>
+                                <p>{formatarDataCurta(evento.dataEvento)}</p>
                             </div>
                         </div>
                     );
@@ -55,8 +44,8 @@ function Carrossel({ eventosProximos, id = "carrosselTopo" }: CarrosselProps) {
 
             {total > 1 && (
                 <>
-                    <button type="button" onClick={anterior} className="carrossel-seta esquerda">❮</button>
-                    <button type="button" onClick={proximo} className="carrossel-seta direita">❯</button>
+                    <button type="button" onClick={anterior} className="carrossel-seta esquerda" aria-label="Slide anterior">❮</button>
+                    <button type="button" onClick={proximo} className="carrossel-seta direita" aria-label="Próximo slide">❯</button>
                 </>
             )}
         </section>

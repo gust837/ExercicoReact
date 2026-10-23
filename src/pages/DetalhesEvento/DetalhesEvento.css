@@ -5,13 +5,20 @@
     width: min(1200px, calc(100% - 48px));
 }
 
+.detalhes-estado {
+    @apply col-span-full text-center text-base py-12 text-text-gray;
+}
+
+.detalhes-estado.erro {
+    @apply text-crimson font-semibold;
+}
+
 .detalhes-evento-conteudo {
     @apply flex flex-col gap-6;
 }
 
 .detalhes-banner-wrapper {
-    @apply w-full h-[260px] lg:h-[400px] rounded-2xl overflow-hidden shadow-lg;
-    background-color: var(--color-text-dark);
+    @apply w-full h-[260px] lg:h-[400px] rounded-2xl overflow-hidden shadow-lg bg-text-dark;
 }
 
 .detalhes-banner {
@@ -19,24 +26,19 @@
 }
 
 .detalhes-titulo {
-    @apply text-3xl lg:text-4xl font-bold m-0;
-    color: var(--color-text-dark);
+    @apply text-3xl lg:text-4xl font-bold m-0 text-text-dark;
 }
 
 .detalhes-abas {
-    @apply flex gap-3 pb-3 border-b-2;
-    border-bottom-color: var(--color-border);
+    @apply flex gap-3 pb-3 border-b-2 border-b-border;
 }
 
 .aba-btn {
-    @apply bg-transparent px-5 py-2 rounded-full font-semibold border-2 cursor-pointer transition-all duration-200;
-    border-color: var(--color-crimson);
-    color: var(--color-crimson);
+    @apply bg-transparent px-5 py-2 rounded-full font-semibold border-2 border-crimson text-crimson cursor-pointer transition-all duration-200;
 }
 
 .aba-btn.ativa {
-    background-color: var(--color-crimson);
-    color: var(--color-white);
+    @apply bg-crimson text-white;
 }
 
 .detalhes-aba-painel {
@@ -44,18 +46,15 @@
 }
 
 .detalhes-descricao {
-    @apply text-base leading-relaxed whitespace-pre-line;
-    color: var(--color-text-gray);
+    @apply text-base leading-relaxed whitespace-pre-line text-text-gray;
 }
 
 .detalhes-comentarios h2 {
-    @apply text-2xl font-bold mb-4;
-    color: var(--color-text-dark);
+    @apply text-2xl font-bold mb-4 text-text-dark;
 }
 
 .sem-comentarios {
-    @apply italic;
-    color: var(--color-text-gray);
+    @apply italic text-text-gray;
 }
 
 .lista-comentarios {
@@ -63,43 +62,28 @@
 }
 
 .item-comentario {
-    @apply px-4 py-3.5 rounded-lg flex flex-col gap-1 border-l-4;
-    background-color: var(--color-off-white);
-    border-left-color: var(--color-crimson);
+    @apply px-4 py-3.5 rounded-lg flex flex-col gap-1 border-l-4 border-l-crimson bg-off-white;
 }
 
 .item-comentario strong {
-    @apply text-sm font-bold;
-    color: var(--color-text-dark);
+    @apply text-sm font-bold text-text-dark;
 }
 
 .item-comentario span {
-    @apply text-xs;
-    color: var(--color-text-light);
+    @apply text-xs text-text-light;
 }
 
 .item-comentario p {
-    @apply mt-1.5 m-0;
-    color: var(--color-text-gray);
+    @apply mt-1.5 m-0 text-text-gray;
 }
 
 /* Formulário de Novo Comentário */
 .form-comentario {
-    @apply flex flex-col gap-3 mb-6 p-4 rounded-xl border;
-    background-color: var(--color-off-white);
-    border-color: var(--color-border);
+    @apply flex flex-col gap-3 mb-6 p-4 rounded-xl border border-border bg-off-white;
 }
 
 .form-comentario textarea {
-    @apply w-full p-3 rounded-lg border text-sm resize-y outline-none transition-colors;
-    border-color: var(--color-border);
-    background-color: var(--color-white);
-    color: var(--color-text-dark);
-    font-family: var(--font-primary);
-}
-
-.form-comentario textarea:focus {
-    border-color: var(--color-crimson);
+    @apply w-full p-3 rounded-lg border border-border bg-white text-text-dark font-primary text-sm resize-y outline-none transition-colors focus:border-crimson;
 }
 
 .form-comentario-acoes {
@@ -107,42 +91,28 @@
 }
 
 .form-comentario-acoes .botao {
-    @apply px-5 py-2.5 rounded-lg font-semibold border-0 cursor-pointer transition-colors;
-    background-color: var(--color-crimson);
-    color: var(--color-white);
-}
-
-.form-comentario-acoes .botao:hover:not(:disabled) {
-    background-color: var(--color-crimson-dark);
+    @apply px-5 py-2.5 rounded-lg font-semibold border-0 cursor-pointer transition-colors bg-crimson text-white hover:enabled:bg-crimson-dark;
 }
 
 .aviso-inscricao-comentario {
-    @apply px-4 py-3 rounded-lg text-sm mb-5 border-l-4;
-    background-color: var(--color-off-white);
-    border-left-color: var(--color-crimson);
-    color: var(--color-text-gray);
+    @apply px-4 py-3 rounded-lg text-sm mb-5 border-l-4 border-l-crimson bg-off-white text-text-gray;
 }
 
 /* Card Lateral Direito */
 .detalhes-evento-card-info {
-    @apply rounded-2xl p-7 shadow-xl flex flex-col gap-4 lg:sticky lg:top-6 border;
-    background-color: var(--color-white);
-    border-color: var(--color-border);
+    @apply rounded-2xl p-7 shadow-xl flex flex-col gap-4 lg:sticky lg:top-6 border border-border bg-white;
 }
 
 .detalhes-evento-card-info h2 {
-    @apply text-xl font-bold m-0;
-    color: var(--color-text-dark);
+    @apply text-xl font-bold m-0 text-text-dark;
 }
 
 .detalhes-evento-card-info hr {
-    @apply border-0 border-t-2 w-14 -mt-2 mb-1;
-    border-top-color: var(--color-crimson);
+    @apply border-0 border-t-2 border-t-crimson w-14 -mt-2 mb-1;
 }
 
 .info-item {
-    @apply flex items-center gap-3 text-sm font-medium;
-    color: var(--color-text-gray);
+    @apply flex items-center gap-3 text-sm font-medium text-text-gray;
 }
 
 .info-item img {
@@ -150,30 +120,16 @@
 }
 
 .detalhes-evento-card-info .botao {
-    @apply w-full px-5 py-3 rounded-lg font-semibold text-base cursor-pointer border-0 mt-2 transition-all duration-200 hover:-translate-y-0.5 disabled:opacity-65 disabled:cursor-not-allowed;
-    background-color: var(--color-crimson);
-    color: var(--color-white);
-}
-
-.detalhes-evento-card-info .botao:hover:not(:disabled) {
-    background-color: var(--color-crimson-dark);
+    @apply w-full px-5 py-3 rounded-lg font-semibold text-base cursor-pointer border-0 mt-2 bg-crimson text-white transition-all duration-200 hover:-translate-y-0.5 hover:enabled:bg-crimson-dark disabled:opacity-65 disabled:cursor-not-allowed;
 }
 
 .detalhes-evento-card-info .detalhes-evento-cancelar {
-    @apply bg-transparent border-2;
-    border-color: var(--color-crimson);
-    color: var(--color-crimson);
-}
-
-.detalhes-evento-card-info .detalhes-evento-cancelar:hover:not(:disabled) {
-    background-color: var(--color-crimson);
-    color: var(--color-white);
+    @apply bg-transparent border-2 border-crimson text-crimson hover:enabled:bg-crimson hover:enabled:text-white;
 }
 
 /* Modal de Confirmação com Animação de Entrada e Saída */
 .modal-overlay {
-    @apply fixed inset-0 z-50 flex items-center justify-center backdrop-blur-sm p-4 transition-opacity duration-300 ease-in-out;
-    background-color: rgba(26, 26, 46, 0.65);
+    @apply fixed inset-0 z-50 flex items-center justify-center backdrop-blur-sm p-4 transition-opacity duration-300 ease-in-out bg-text-dark/65;
 }
 
 .modal-overlay.aberto {
@@ -185,9 +141,7 @@
 }
 
 .modal-confirmacao {
-    @apply rounded-2xl max-w-md w-full p-7 shadow-2xl flex flex-col items-center text-center gap-4 border-2 transition-all duration-300 ease-in-out;
-    background-color: var(--color-white);
-    border-color: var(--color-crimson);
+    @apply rounded-2xl max-w-md w-full p-7 shadow-2xl flex flex-col items-center text-center gap-4 border-2 border-crimson bg-white transition-all duration-300 ease-in-out;
 }
 
 .modal-overlay.aberto .modal-confirmacao {
@@ -199,20 +153,15 @@
 }
 
 .modal-icone {
-    @apply w-14 h-14 rounded-full flex items-center justify-center text-2xl font-bold border-2;
-    background-color: var(--color-off-white);
-    color: var(--color-crimson);
-    border-color: var(--color-crimson);
+    @apply w-14 h-14 rounded-full flex items-center justify-center text-2xl font-bold border-2 border-crimson bg-off-white text-crimson;
 }
 
 .modal-confirmacao h3 {
-    @apply text-xl font-bold m-0;
-    color: var(--color-text-dark);
+    @apply text-xl font-bold m-0 text-text-dark;
 }
 
 .modal-confirmacao p {
-    @apply text-sm leading-relaxed m-0;
-    color: var(--color-text-gray);
+    @apply text-sm leading-relaxed m-0 text-text-gray;
 }
 
 .modal-confirmacao .confirmar-botoes {
@@ -225,15 +174,9 @@
 }
 
 .btn-manter-inscricao {
-    @apply border;
-    background-color: var(--color-off-white);
-    border-color: var(--color-border);
-    color: var(--color-text-dark);
+    @apply border border-border bg-off-white text-text-dark;
 }
 
 .detalhe-evento-mensagem {
-    @apply px-3.5 py-2.5 rounded-lg text-sm font-medium border-l-4;
-    background-color: var(--color-off-white);
-    border-left-color: var(--color-crimson);
-    color: var(--color-text-dark);
+    @apply px-3.5 py-2.5 rounded-lg text-sm font-medium border-l-4 border-l-crimson bg-off-white text-text-dark;
 }

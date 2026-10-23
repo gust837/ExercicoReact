@@ -1,9 +1,7 @@
 @reference "../../index.css";
 
 .header {
-    @apply border-b;
-    border-bottom-color: var(--color-border);
-    background-color: var(--color-white);
+    @apply border-b border-b-border bg-white;
 }
 
 .header-conteudo {
@@ -19,16 +17,11 @@
     @apply flex gap-7 font-medium;
 }
 
-.header a {
-    @apply no-underline transition-colors;
-    color: var(--color-text-dark);
+.header-acoes {
+    @apply flex items-center gap-5 font-medium;
 }
 
-.header a:hover {
-    color: var(--color-crimson);
-}
-
+.header a,
 .header-conteudo button {
-    @apply border-0 bg-transparent cursor-pointer;
-    color: var(--color-text-dark);
+    @apply no-underline transition-colors text-text-dark hover:text-crimson border-0 bg-transparent cursor-pointer;
 }

@@ -1,9 +1,8 @@
-import { useEffect, useRef, useState, type PropsWithChildren } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState, type PropsWithChildren } from "react";
 import type { AuthSession, LoginPayload } from "../types/api";
 import { SESSION_STORAGE_KEY, UNAUTHORIZED_EVENT } from "../services/api";
 import { authService, usuarioService } from "../services/eventPlusService";
 import { AuthContext } from "./Auth";
-
 
 function readSession() {
     try {
@@ -23,62 +22,81 @@ function readSession() {
 
 export function AuthProvider({ children }: PropsWithChildren) {
     const [session, setSession] = useState<AuthSession | null>(() => readSession());
+    const sessionRef = useRef(session);
     const initialSession = useRef(session);
     const [carregandoSessao, setCarregandoSessao] = useState(Boolean(session));
 
-    function persist(next: AuthSession | null) {
+    const persist = useCallback((next: AuthSession | null) => {
+        sessionRef.current = next;
         setSession(next);
         if (next) localStorage.setItem(SESSION_STORAGE_KEY, JSON.stringify(next));
         else localStorage.removeItem(SESSION_STORAGE_KEY);
-    }
+    }, []);
 
-    async function atualizarUsuario() {
-        if (!session) return;
-        const usuario = await usuarioService.buscar(session.usuario.idUsuario);
-        persist({ ...session, usuario })
-    }
+    const atualizarUsuario = useCallback(async () => {
+        const atual = sessionRef.current;
+        if (!atual) return;
+        const usuario = await usuarioService.buscar(atual.usuario.idUsuario);
+        persist({ ...atual, usuario });
+    }, [persist]);
 
-    async function login(payload: LoginPayload) {
+    const login = useCallback(async (payload: LoginPayload) => {
         const loginResponse = await authService.login(payload);
-        const baseSession: AuthSession = loginResponse
+        const baseSession: AuthSession = loginResponse;
         persist(baseSession);
         try {
             const usuario = await usuarioService.buscar(loginResponse.usuario.idUsuario);
             persist({ ...baseSession, usuario });
         } catch {
-
+            // Mantém os dados básicos retornados no login caso a busca detalhada falhe
         }
-    }
+    }, [persist]);
 
-    function logout() { persist(null); }
+    const logout = useCallback(() => {
+        persist(null);
+    }, [persist]);
 
     useEffect(() => {
-        const handleUnauthorized = () => setSession(null);
+        const handleUnauthorized = () => persist(null);
 
         window.addEventListener(UNAUTHORIZED_EVENT, handleUnauthorized);
 
         return () =>
             window.removeEventListener(UNAUTHORIZED_EVENT, handleUnauthorized);
-    }, [])
+    }, [persist]);
 
     useEffect(() => {
-        const restored = initialSession.current
+        const restored = initialSession.current;
 
         if (!restored) return;
-        usuarioService.buscar(restored.usuario.idUsuario).then((usuario) => {
-            const next = { ...restored, usuario }
-            localStorage.setItem(SESSION_STORAGE_KEY, JSON.stringify(next));
-            setSession(next);
-        })
+        usuarioService
+            .buscar(restored.usuario.idUsuario)
+            .then((usuario) => {
+                persist({ ...restored, usuario });
+            })
             .catch(() => undefined)
             .finally(() => setCarregandoSessao(false));
-    }, [])
+    }, [persist]);
 
     const perfil = session?.usuario.idTipoUsuarioNavigation?.titulo.toLowerCase() ?? "";
+
+    const contextValue = useMemo(
+        () => ({
+            session,
+            usuario: session?.usuario ?? null,
+            perfil,
+            autenticado: Boolean(session),
+            carregandoSessao,
+            login,
+            logout,
+            atualizarUsuario,
+        }),
+        [session, perfil, carregandoSessao, login, logout, atualizarUsuario]
+    );
+
     return (
-        <AuthContext.Provider
-            value={{ session, usuario: session?.usuario ?? null, perfil, autenticado: Boolean(session), carregandoSessao, login, logout, atualizarUsuario }}>
+        <AuthContext.Provider value={contextValue}>
             {children}
         </AuthContext.Provider>
-    )
+    );
 }

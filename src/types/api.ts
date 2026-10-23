@@ -13,7 +13,7 @@ export interface Instituicao {
     idInstituicao: string;
     cnpj: string;
     nomeFantasia: string;
-    endereço: string;
+    endereco: string;
 }
 
 export interface Usuario {
@@ -65,8 +65,13 @@ export interface LoginResponse{
     usuario: Usuario;
 }
 
-export interface AuthSession extends LoginResponse {
-    usuario: Usuario;
+export type AuthSession = LoginResponse;
+
+export interface UsuarioPayload{
+    nome: string;
+    email: string;
+    senha: string;
+    idTipoUsuario: string | null;
 }
 
 export interface ComentarioPayload{
@@ -79,9 +84,4 @@ export interface PresencaPayload {
     situacao: boolean;
     idEvento: string;
     idUsuario: string | null;
-}
-
-export interface MensagemModeracao{
-    mensagem: string;
-    motivo?: string;
 }

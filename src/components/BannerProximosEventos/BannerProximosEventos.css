@@ -5,8 +5,7 @@
 }
 
 .proximo-card {
-    @apply relative w-full min-h-[420px] md:min-h-[380px] flex items-center overflow-hidden;
-    background-color: var(--color-text-dark);
+    @apply relative w-full min-h-[420px] md:min-h-[380px] flex items-center overflow-hidden bg-text-dark;
 }
 
 /* Animação idêntica ao Carrossel */
@@ -51,51 +50,31 @@
 }
 
 .proximo-badge-data {
-    @apply absolute bottom-3 left-3 px-3.5 py-1.5 rounded-full text-xs font-semibold backdrop-blur-sm;
-    background-color: rgba(26, 26, 46, 0.8);
-    color: var(--color-white);
+    @apply absolute bottom-3 left-3 px-3.5 py-1.5 rounded-full text-xs font-semibold backdrop-blur-sm bg-text-dark/80 text-white;
 }
 
 .proximo-card-info {
-    @apply flex-1 flex flex-col items-start gap-3;
-    color: var(--color-white);
+    @apply flex-1 flex flex-col items-start gap-3 text-white;
 }
 
 .proximo-tag-categoria {
-    @apply px-3.5 py-1 rounded-full text-xs font-bold uppercase;
-    background-color: var(--color-crimson);
-    color: var(--color-white);
+    @apply px-3.5 py-1 rounded-full text-xs font-bold uppercase bg-crimson text-white;
 }
 
 .proximo-card-info h3 {
-    @apply text-2xl md:text-3xl font-bold m-0;
-    color: var(--color-white);
+    @apply text-2xl md:text-3xl font-bold m-0 text-white;
 }
 
 .proximo-card-info p {
-    @apply text-sm md:text-base leading-relaxed line-clamp-3 m-0;
-    color: var(--color-off-white);
+    @apply text-sm md:text-base leading-relaxed line-clamp-3 m-0 text-off-white;
 }
 
 .btn-conectar-evento {
-    @apply mt-2 px-6 py-2.5 rounded-lg font-semibold transition transform hover:-translate-y-0.5;
-    background-color: var(--color-crimson);
-    color: var(--color-white);
-}
-
-.btn-conectar-evento:hover {
-    background-color: var(--color-crimson-dark);
-    color: var(--color-white);
+    @apply mt-2 px-6 py-2.5 rounded-lg font-semibold transition transform hover:-translate-y-0.5 bg-crimson text-white hover:bg-crimson-dark hover:text-white;
 }
 
 .proximo-seta {
-    @apply absolute top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full flex items-center justify-center transition cursor-pointer border-none;
-    background-color: rgba(26, 26, 46, 0.6);
-    color: var(--color-white);
-}
-
-.proximo-seta:hover {
-    background-color: var(--color-crimson);
+    @apply absolute top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full flex items-center justify-center transition cursor-pointer border-none bg-text-dark/60 text-white hover:bg-crimson;
 }
 
 .proximo-seta.esquerda {
