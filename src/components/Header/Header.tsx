@@ -25,7 +25,7 @@ function Header() {
                 <nav>
                     <NavLink to="/home">Home</NavLink>
                     <NavLink to="/eventos">Eventos</NavLink>
-                    {administrador && <NavLink to="/usuarios">Usuários</NavLink>}
+                    {administrador && <NavLink to="/usuarios">Administração</NavLink>}
                     <NavLink to="/home#contato">Contato</NavLink>
                 </nav>
 

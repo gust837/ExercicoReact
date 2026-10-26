@@ -1,0 +1,92 @@
+@reference "../../index.css";
+
+.cadastro-usuario-page {
+    @apply flex-1 flex flex-col;
+}
+
+.cadastro-usuario-formulario-section {
+    @apply mx-auto py-12;
+    width: min(1200px, calc(100% - 48px));
+}
+
+.section-title {
+    @apply text-3xl font-bold text-center text-text-dark m-0;
+}
+
+.section-divider {
+    @apply w-24 mt-3 mb-7 mx-auto border-0 border-t-[3px] border-t-crimson;
+}
+
+.admin-abas {
+    @apply flex justify-center flex-wrap gap-3.5 mb-10;
+}
+
+.admin-aba-btn {
+    @apply bg-transparent px-6 py-2.5 rounded-full font-semibold font-primary border-2 border-crimson text-crimson cursor-pointer transition-all duration-200 hover:scale-105;
+}
+
+.admin-aba-btn.ativa {
+    @apply bg-crimson text-white shadow-md;
+}
+
+.cadastro-usuario-conteudo {
+    @apply grid grid-cols-1 lg:grid-cols-2 gap-10 items-center;
+}
+
+.cadastro-usuario-ilustracao {
+    @apply w-full max-w-[420px] mx-auto object-contain;
+}
+
+.cadastro-usuario-formulario {
+    @apply w-full rounded-2xl p-7 shadow-xl border border-border bg-white flex flex-col gap-4;
+}
+
+.cadastro-usuario-formulario h2 {
+    @apply text-xl font-bold text-text-dark m-0 mb-1;
+}
+
+.visually-hidden {
+    @apply sr-only;
+}
+
+.cadastro-usuario-formulario .campo,
+.cadastro-usuario-grid select,
+.cadastro-usuario-grid textarea {
+    @apply w-full px-3.5 py-3 rounded-lg border border-border bg-off-white text-text-dark font-primary text-sm outline-none transition-colors focus:border-crimson focus:bg-white;
+}
+
+.cadastro-usuario-grid textarea {
+    @apply resize-y;
+}
+
+.campo-arquivo-wrapper {
+    @apply flex flex-col gap-1.5;
+}
+
+.campo-arquivo-label {
+    @apply text-xs font-semibold text-text-gray;
+}
+
+.campo-arquivo {
+    @apply w-full text-sm text-text-gray file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-crimson file:text-white hover:file:bg-crimson-dark file:cursor-pointer;
+}
+
+.cadastro-usuario-grid {
+    @apply flex flex-col gap-4;
+}
+
+.cadastro-usuario-acoes {
+    @apply flex flex-col sm:flex-row gap-3 mt-1;
+}
+
+.cadastro-usuario-formulario .botao {
+    @apply flex-1 px-5 py-3 rounded-lg font-semibold text-base cursor-pointer border-0 bg-crimson text-white transition-all duration-200 hover:-translate-y-0.5 hover:enabled:bg-crimson-dark disabled:opacity-65 disabled:cursor-not-allowed;
+}
+
+.cadastro-usuario-cancelar {
+    @apply flex-1 px-5 py-3 rounded-lg font-semibold text-sm cursor-pointer border-2 border-crimson bg-transparent text-crimson transition-colors hover:bg-crimson hover:text-white;
+}
+
+.cadastro-usuario-mensagem {
+    @apply px-3.5 py-2.5 rounded-lg text-sm font-medium m-0 border-l-4 border-l-crimson bg-off-white text-text-dark;
+}

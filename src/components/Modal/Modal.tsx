@@ -28,7 +28,6 @@ function Modal({
     const timeoutRef = useRef<number | undefined>(undefined);
 
     // Controla automaticamente a animação de entrada e saída quando "aberto" muda
-    // Controla automaticamente a animação de entrada e saída quando "aberto" muda
     useEffect(() => {
         window.clearTimeout(timeoutRef.current);
 

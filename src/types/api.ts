@@ -6,7 +6,6 @@ export interface TipoEvento {
 export interface TipoUsuario {
     idTipoUsuario: string;
     titulo: string;
-
 }
 
 export interface Instituicao {
@@ -25,8 +24,8 @@ export interface Usuario {
 }
 
 export interface Evento {
-    idEvento: string
-    nomeEvento: string
+    idEvento: string;
+    nomeEvento: string;
     descricao: string;
     dataEvento: string;
     imagemUrl?: string | null;
@@ -36,7 +35,7 @@ export interface Evento {
     idInstituicaoNavigation?: Instituicao | null;
 }
 
-export interface Comentario{
+export interface Comentario {
     idComentario: string;
     descricao: string;
     dataComentario: string;
@@ -54,12 +53,12 @@ export interface Presenca {
     idEventoNavigation?: Evento | null;
 }
 
-export interface LoginPayload{
+export interface LoginPayload {
     email: string;
     senha: string;
 }
 
-export interface LoginResponse{
+export interface LoginResponse {
     token: string;
     expiracao: string;
     usuario: Usuario;
@@ -67,14 +66,23 @@ export interface LoginResponse{
 
 export type AuthSession = LoginResponse;
 
-export interface UsuarioPayload{
+export interface UsuarioPayload {
     nome: string;
     email: string;
-    senha: string;
+    senha?: string;
     idTipoUsuario: string | null;
 }
 
-export interface ComentarioPayload{
+export interface EventoPayload {
+    nomeEvento: string;
+    descricao: string;
+    dataEvento: string;
+    idTipoEvento: string;
+    idInstituicao: string;
+    arquivoImagem?: File | null;
+}
+
+export interface ComentarioPayload {
     descricao: string;
     idEvento: string;
     idUsuario: string;

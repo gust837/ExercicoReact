@@ -1,5 +1,5 @@
 import { useLocation, useNavigate, useParams } from "react-router-dom";
-import { useCallback, useEffect, useRef, useState, type FormEvent } from "react";
+import { useCallback, useEffect, useState, type FormEvent } from "react";
 import { comentarioService, eventoService, presencaService } from "../../services/eventPlusService";
 import type { Presenca, Evento, Comentario } from "../../types/api";
 import { formatarDataCurta, formatarDataLonga } from "../../utils/formatarData";
@@ -12,6 +12,7 @@ import filtro from "../../assets/icons/filtro.svg";
 import Header from "../../components/Header/Header";
 import Footer from "../../components/Footer/Footer";
 import Botao from "../../components/Botao/Botao";
+import Modal from "../../components/Modal/Modal";
 
 import "./DetalhesEvento.css";
 import { useAuth } from "../../context/Auth";
@@ -47,9 +48,6 @@ function DetalhesEvento() {
     const [carregando, setCarregando] = useState(false);
     const [erro, setErro] = useState("");
 
-    const [modalAnimando, setModalAnimando] = useState(false);
-    const timeoutModalRef = useRef<number | undefined>(undefined);
-
     const carregar = useCallback(async () => {
         if (!id) return;
         setCarregando(true);
@@ -73,11 +71,6 @@ function DetalhesEvento() {
         const timeout = window.setTimeout(() => void carregar(), 0);
         return () => window.clearTimeout(timeout);
     }, [carregar]);
-
-    // Limpa o timer do modal ao desmontar a página
-    useEffect(() => {
-        return () => window.clearTimeout(timeoutModalRef.current);
-    }, []);
 
     function exigirLogin() {
         if (autenticado && usuario?.idUsuario) return false;
@@ -104,41 +97,13 @@ function DetalhesEvento() {
         }
     }
 
-    function abrirModalCancelamento() {
-        window.clearTimeout(timeoutModalRef.current);
-        setConfirmandoCancelamento(true);
-        requestAnimationFrame(() => {
-            setModalAnimando(true);
-        });
-    }
-
-    const fecharModalCancelamento = useCallback(() => {
-        window.clearTimeout(timeoutModalRef.current);
-        setModalAnimando(false);
-        timeoutModalRef.current = window.setTimeout(() => {
-            setConfirmandoCancelamento(false);
-        }, 300);
-    }, []);
-
-    // Fecha o modal ao pressionar a tecla Escape
-    useEffect(() => {
-        if (!confirmandoCancelamento) return;
-        function aoPressionarTecla(e: KeyboardEvent) {
-            if (e.key === "Escape" && !enviandoInscricao) {
-                fecharModalCancelamento();
-            }
-        }
-        window.addEventListener("keydown", aoPressionarTecla);
-        return () => window.removeEventListener("keydown", aoPressionarTecla);
-    }, [confirmandoCancelamento, enviandoInscricao, fecharModalCancelamento]);
-
     async function cancelarInscricao() {
         if (!presenca) return;
         setEnviandoInscricao(true);
         setMensagemInscricao("");
         try {
             await presencaService.excluir(presenca.idPresenca);
-            fecharModalCancelamento();
+            setConfirmandoCancelamento(false);
             setPresencaInfo({ chave: chavePresenca, presenca: null });
             setMensagemInscricao("Inscrição cancelada com sucesso.");
         } catch (error) {
@@ -324,47 +289,25 @@ function DetalhesEvento() {
                                 type="button"
                                 disabled={checandoPresenca || enviandoInscricao}
                                 onClick={() =>
-                                    presenca ? abrirModalCancelamento() : void inscrever()
+                                    presenca ? setConfirmandoCancelamento(true) : void inscrever()
                                 }
                             />
-                            {confirmandoCancelamento ? (
-                                <div
-                                    className={`modal-overlay ${modalAnimando ? "aberto" : "fechado"}`}
-                                    onClick={() => !enviandoInscricao && fecharModalCancelamento()}
-                                >
-                                    <div
-                                        className="modal-confirmacao"
-                                        role="dialog"
-                                        aria-modal="true"
-                                        aria-labelledby="modal-cancelar-titulo"
-                                        onClick={(e) => e.stopPropagation()}
-                                    >
-                                        <div className="modal-icone">!</div>
-                                        <h3 id="modal-cancelar-titulo">Cancelar Inscrição?</h3>
-                                        <p>
-                                            Tem certeza que deseja cancelar sua inscrição no evento{" "}
-                                            <strong>{evento?.nomeEvento}</strong>?
-                                        </p>
-                                        <div className="confirmar-botoes">
-                                            <Botao
-                                                className="btn-confirmar-sim"
-                                                texto={enviandoInscricao ? "Cancelando..." : "Sim, cancelar"}
-                                                type="button"
-                                                disabled={enviandoInscricao}
-                                                onClick={() => void cancelarInscricao()}
-                                            />
-                                            <button
-                                                type="button"
-                                                className="btn-manter-inscricao"
-                                                disabled={enviandoInscricao}
-                                                onClick={fecharModalCancelamento}
-                                            >
-                                                Manter inscrição
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            ) : null}
+
+                            <Modal
+                                aberto={confirmandoCancelamento}
+                                titulo="Cancelar Inscrição?"
+                                textoConfirmar="Sim, cancelar"
+                                textoCancelar="Manter inscrição"
+                                carregando={enviandoInscricao}
+                                aoConfirmar={() => void cancelarInscricao()}
+                                aoFechar={() => setConfirmandoCancelamento(false)}
+                            >
+                                <p>
+                                    Tem certeza que deseja cancelar sua inscrição no evento{" "}
+                                    <strong>{evento?.nomeEvento}</strong>?
+                                </p>
+                            </Modal>
+
                             {mensagemInscricao ? (
                                 <p className="detalhe-evento-mensagem" role="status">
                                     {mensagemInscricao}

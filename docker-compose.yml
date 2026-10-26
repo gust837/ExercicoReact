@@ -1,0 +1,49 @@
+services:
+  # 1. CONTAINER DO BANCO DE DADOS SQL SERVER
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: eventplus-sql
+    environment:
+      ACCEPT_EULA: "Y"
+      MSSQL_SA_PASSWORD: "Senai@134Password!"
+    ports:
+      - "1433:1433"
+    volumes:
+      - sql_dados:/var/opt/mssql
+
+  # 2. CONTAINER DA SUA API C#
+  api:
+    build:
+      context: ../EventPlus.WebAPI/EventPlus.WebAPI
+      dockerfile: Dockerfile
+    container_name: eventplus-api
+    ports:
+      - "8080:8080"
+    environment:
+      ASPNETCORE_ENVIRONMENT: "Development"
+      ConnectionStrings__DefaultConnection: "Server=sqlserver,1433;Database=EventPlus;User Id=sa;Password=Senai@134Password!;TrustServerCertificate=True;"
+      Jwt__Key: "sua-chave-secreta-jwt-com-pelo-menos-32-caracteres"
+      FRONTEND_URL: "http://localhost:5173"
+      Cloudinary__CloudName: "${CLOUDINARY_CLOUD_NAME}"
+      Cloudinary__ApiKey: "${CLOUDINARY_API_KEY}"
+      Cloudinary__ApiSecret: "${CLOUDINARY_API_SECRET}"
+      Sightengine__ApiUser: "${SIGHTENGINE_API_USER}"
+      Sightengine__ApiSecret: "${SIGHTENGINE_API_SECRET}"
+    depends_on:
+      - sqlserver
+
+  # 3. CONTAINER DO SEU FRONTEND REACT
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        VITE_API_URL: "http://localhost:8080/api/"
+    container_name: eventplus-web
+    ports:
+      - "5173:80"
+    depends_on:
+      - api
+
+volumes:
+  sql_dados:
