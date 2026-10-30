@@ -9,7 +9,7 @@ import imagemPadrao from "../../assets/banner-1.png";
 import relogio from "../../assets/icons/relogio.svg";
 import predio from "../../assets/icons/predio.svg";
 import filtro from "../../assets/icons/filtro.svg";
-import deletar from "../../assets/icons/deletar.svg";
+import lixeira from "../../assets/icons/lixeira.svg";
 
 import Header from "../../components/Header/Header";
 import Footer from "../../components/Footer/Footer";
@@ -305,7 +305,7 @@ function DetalhesEvento() {
                                                                     title="Excluir comentário (Administrador)"
                                                                     aria-label={`Excluir comentário de ${c.idUsuarioNavigation?.nome || "Participante"}`}
                                                                 >
-                                                                    <img src={deletar} alt="" />
+                                                                    <img src={lixeira} alt="" />
                                                                     <span>Excluir</span>
                                                                 </button>
                                                             )}
