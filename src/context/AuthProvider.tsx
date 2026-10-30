@@ -43,12 +43,14 @@ export function AuthProvider({ children }: PropsWithChildren) {
     const login = useCallback(async (payload: LoginPayload) => {
         const loginResponse = await authService.login(payload);
         const baseSession: AuthSession = loginResponse;
-        persist(baseSession);
+        // Grava o token no localStorage primeiro para o interceptor do Axios autenticar a busca do perfil completo
+        localStorage.setItem(SESSION_STORAGE_KEY, JSON.stringify(baseSession));
         try {
             const usuario = await usuarioService.buscar(loginResponse.usuario.idUsuario);
             persist({ ...baseSession, usuario });
         } catch {
             // Mantém os dados básicos retornados no login caso a busca detalhada falhe
+            persist(baseSession);
         }
     }, [persist]);
 

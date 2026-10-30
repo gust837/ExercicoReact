@@ -1,7 +1,7 @@
 @reference "../../index.css";
 
 .carrossel-container {
-    @apply relative w-full h-[320px] md:h-[480px] overflow-hidden select-none bg-text-dark;
+    @apply relative w-full h-[250px] sm:h-[340px] md:h-[480px] overflow-hidden select-none bg-text-dark;
 }
 
 /* Animação idêntica ao BannerProximosEventos */
@@ -34,29 +34,29 @@
 }
 
 .carousel-banner-main {
-    @apply relative z-10 max-w-[90%] max-h-[88%] w-auto h-auto object-contain rounded-lg shadow-2xl;
+    @apply relative z-10 max-w-[92%] max-h-[84%] sm:max-w-[90%] sm:max-h-[88%] w-auto h-auto object-contain rounded-lg shadow-2xl;
 }
 
 .carousel-legenda {
-    @apply absolute z-20 bottom-6 left-1/2 -translate-x-1/2 backdrop-blur-md px-7 py-3.5 rounded-xl text-center max-w-[85%] shadow-xl border-l-4 border-l-crimson bg-text-dark/85;
+    @apply absolute z-20 bottom-3 sm:bottom-6 left-1/2 -translate-x-1/2 backdrop-blur-md px-4 py-2 sm:px-7 sm:py-3.5 rounded-xl text-center w-[88%] sm:w-auto sm:max-w-[85%] shadow-xl border-l-4 border-l-crimson bg-text-dark/85;
 }
 
 .carousel-legenda h3 {
-    @apply text-lg md:text-2xl font-bold mb-1 text-white;
+    @apply text-sm sm:text-lg md:text-2xl font-bold mb-0.5 sm:mb-1 text-white line-clamp-1;
 }
 
 .carousel-legenda p {
-    @apply text-xs md:text-sm font-medium m-0 text-off-white;
+    @apply text-xs md:text-sm font-medium m-0 text-off-white line-clamp-1;
 }
 
 .carrossel-seta {
-    @apply absolute top-1/2 -translate-y-1/2 z-30 w-11 h-11 rounded-full flex items-center justify-center transition cursor-pointer backdrop-blur-sm border-none bg-text-dark/60 text-white hover:bg-crimson;
+    @apply absolute top-1/2 -translate-y-1/2 z-30 w-9 h-9 sm:w-11 sm:h-11 rounded-full flex items-center justify-center transition cursor-pointer backdrop-blur-sm border-none bg-text-dark/60 text-white hover:bg-crimson;
 }
 
 .carrossel-seta.esquerda {
-    @apply left-4;
+    @apply left-2 sm:left-4;
 }
 
 .carrossel-seta.direita {
-    @apply right-4;
+    @apply right-2 sm:right-4;
 }

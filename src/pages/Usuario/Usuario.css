@@ -5,24 +5,24 @@
 }
 
 .cadastro-usuario-formulario-section {
-    @apply mx-auto py-12;
-    width: min(1200px, calc(100% - 48px));
+    @apply mx-auto py-8 md:py-12;
+    width: min(1200px, calc(100% - 32px));
 }
 
 .section-title {
-    @apply text-3xl font-bold text-center text-text-dark m-0;
+    @apply text-2xl sm:text-3xl font-bold text-center text-text-dark m-0;
 }
 
 .section-divider {
-    @apply w-24 mt-3 mb-7 mx-auto border-0 border-t-[3px] border-t-crimson;
+    @apply w-24 mt-3 mb-6 md:mb-7 mx-auto border-0 border-t-[3px] border-t-crimson;
 }
 
 .admin-abas {
-    @apply flex justify-center flex-wrap gap-3.5 mb-10;
+    @apply grid grid-cols-2 sm:flex sm:justify-center sm:flex-wrap gap-2.5 sm:gap-3.5 mb-8 md:mb-10;
 }
 
 .admin-aba-btn {
-    @apply bg-transparent px-6 py-2.5 rounded-full font-semibold font-primary border-2 border-crimson text-crimson cursor-pointer transition-all duration-200 hover:scale-105;
+    @apply bg-transparent px-3 py-2 sm:px-6 sm:py-2.5 text-xs sm:text-base rounded-full font-semibold font-primary border-2 border-crimson text-crimson cursor-pointer transition-all duration-200 hover:scale-105 text-center;
 }
 
 .admin-aba-btn.ativa {
@@ -30,19 +30,19 @@
 }
 
 .cadastro-usuario-conteudo {
-    @apply grid grid-cols-1 lg:grid-cols-2 gap-10 items-center;
+    @apply grid grid-cols-1 lg:grid-cols-2 gap-7 lg:gap-10 items-center;
 }
 
 .cadastro-usuario-ilustracao {
-    @apply w-full max-w-[420px] mx-auto object-contain;
+    @apply w-full max-w-[220px] sm:max-w-[320px] lg:max-w-[420px] mx-auto object-contain;
 }
 
 .cadastro-usuario-formulario {
-    @apply w-full rounded-2xl p-7 shadow-xl border border-border bg-white flex flex-col gap-4;
+    @apply w-full rounded-2xl p-5 sm:p-7 shadow-xl border border-border bg-white flex flex-col gap-4;
 }
 
 .cadastro-usuario-formulario h2 {
-    @apply text-xl font-bold text-text-dark m-0 mb-1;
+    @apply text-lg sm:text-xl font-bold text-text-dark m-0 mb-1;
 }
 
 .visually-hidden {
@@ -68,7 +68,7 @@
 }
 
 .campo-arquivo {
-    @apply w-full text-sm text-text-gray file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-crimson file:text-white hover:file:bg-crimson-dark file:cursor-pointer;
+    @apply w-full text-xs sm:text-sm text-text-gray file:mr-3 sm:file:mr-4 file:py-2 file:px-3 sm:file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-crimson file:text-white hover:file:bg-crimson-dark file:cursor-pointer;
 }
 
 .cadastro-usuario-grid {

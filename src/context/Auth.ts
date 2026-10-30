@@ -22,9 +22,16 @@ export function useAuth() {
 }
 
 export function perfilEhAdministrador(perfil: string) {
-    return perfil === "administrador" || perfil === "admin";
+    const p = perfil.trim().toLowerCase();
+    return p === "administrador" || p === "admin";
 }
 
 export function perfilEhOrganizador(perfil: string) {
-    return perfilEhAdministrador(perfil) || perfil === "organizador";
+    const p = perfil.trim().toLowerCase();
+    return perfilEhAdministrador(p) || p === "organizador";
+}
+
+export function perfilEhParticipante(perfil: string) {
+    const p = perfil.trim().toLowerCase();
+    return p === "comum" || p === "participante" || p === "aluno";
 }

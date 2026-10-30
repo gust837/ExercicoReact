@@ -1,11 +1,11 @@
 @reference "../../index.css";
 
 .banner-proximos-container {
-    @apply w-full my-8 rounded-2xl overflow-hidden shadow-2xl;
+    @apply w-full my-6 md:my-8 rounded-2xl overflow-hidden shadow-2xl;
 }
 
 .proximo-card {
-    @apply relative w-full min-h-[420px] md:min-h-[380px] flex items-center overflow-hidden bg-text-dark;
+    @apply relative w-full min-h-[480px] sm:min-h-[440px] md:min-h-[380px] flex items-center overflow-hidden bg-text-dark;
 }
 
 /* Animação idêntica ao Carrossel */
@@ -38,11 +38,11 @@
 }
 
 .proximo-card-conteudo {
-    @apply relative z-10 w-full px-6 py-6 md:px-14 md:py-8 flex flex-col md:flex-row gap-6 md:gap-10 items-center;
+    @apply relative z-10 w-full px-5 py-6 sm:px-8 md:px-14 md:py-8 flex flex-col md:flex-row gap-4 sm:gap-6 md:gap-10 items-center;
 }
 
 .proximo-card-imagem {
-    @apply relative w-full md:w-[45%] h-[200px] md:h-[280px] rounded-xl overflow-hidden shadow-2xl shrink-0;
+    @apply relative w-full md:w-[45%] h-[175px] sm:h-[200px] md:h-[280px] rounded-xl overflow-hidden shadow-2xl shrink-0;
 }
 
 .proximo-card-imagem img {
@@ -54,7 +54,7 @@
 }
 
 .proximo-card-info {
-    @apply flex-1 flex flex-col items-start gap-3 text-white;
+    @apply flex-1 w-full flex flex-col items-start gap-2.5 sm:gap-3 text-white;
 }
 
 .proximo-tag-categoria {
@@ -62,25 +62,25 @@
 }
 
 .proximo-card-info h3 {
-    @apply text-2xl md:text-3xl font-bold m-0 text-white;
+    @apply text-xl sm:text-2xl md:text-3xl font-bold m-0 text-white line-clamp-2;
 }
 
 .proximo-card-info p {
-    @apply text-sm md:text-base leading-relaxed line-clamp-3 m-0 text-off-white;
+    @apply text-xs sm:text-sm md:text-base leading-relaxed line-clamp-3 m-0 text-off-white;
 }
 
 .btn-conectar-evento {
-    @apply mt-2 px-6 py-2.5 rounded-lg font-semibold transition transform hover:-translate-y-0.5 bg-crimson text-white hover:bg-crimson-dark hover:text-white;
+    @apply mt-1 sm:mt-2 w-full sm:w-auto text-center px-6 py-2.5 rounded-lg text-sm sm:text-base font-semibold transition transform hover:-translate-y-0.5 bg-crimson text-white hover:bg-crimson-dark hover:text-white;
 }
 
 .proximo-seta {
-    @apply absolute top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full flex items-center justify-center transition cursor-pointer border-none bg-text-dark/60 text-white hover:bg-crimson;
+    @apply absolute top-[110px] sm:top-[125px] md:top-1/2 -translate-y-1/2 z-20 w-9 h-9 md:w-10 md:h-10 rounded-full flex items-center justify-center transition cursor-pointer border-none bg-text-dark/70 text-white hover:bg-crimson;
 }
 
 .proximo-seta.esquerda {
-    @apply left-3;
+    @apply left-2.5 md:left-3;
 }
 
 .proximo-seta.direita {
-    @apply right-3;
+    @apply right-2.5 md:right-3;
 }

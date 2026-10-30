@@ -5,6 +5,7 @@ import "./Usuario.css";
 import type { Evento, Instituicao, TipoEvento, TipoUsuario, Usuario } from "../../types/api";
 import Campo from "../../components/Campo/Campo";
 import Botao from "../../components/Botao/Botao";
+import { perfilEhAdministrador, useAuth } from "../../context/Auth";
 import {
     eventoService,
     instituicaoService,
@@ -60,7 +61,10 @@ function paraDataInput(valor: string) {
 }
 
 function Usuarios() {
+    const { perfil } = useAuth();
+    const ehAdmin = perfilEhAdministrador(perfil);
     const [abaAtiva, setAbaAtiva] = useState<AbaAdmin>("usuarios");
+    const abaExibida: AbaAdmin = ehAdmin ? abaAtiva : "eventos";
 
     // ==================== ESTADO DE USUÁRIOS ====================
     const [formulario, setFormulario] = useState(inicialUsuario);
@@ -144,11 +148,13 @@ function Usuarios() {
 
     useEffect(() => {
         const timeout = window.setTimeout(() => {
-            void carregarUsuarios();
+            if (ehAdmin) {
+                void carregarUsuarios();
+            }
             void carregarEventos();
         }, 0);
         return () => window.clearTimeout(timeout);
-    }, [carregarUsuarios, carregarEventos]);
+    }, [ehAdmin, carregarUsuarios, carregarEventos]);
 
     // ==================== FUNÇÕES DE USUÁRIOS ====================
     function atualizar(event: ChangeEvent<HTMLInputElement | HTMLSelectElement>) {
@@ -418,43 +424,47 @@ function Usuarios() {
             <Header />
             <main className="cadastro-usuario-page">
                 <section className="cadastro-usuario-formulario-section">
-                    <h1 className="section-title">Painel de Administração</h1>
+                    <h1 className="section-title">
+                        {ehAdmin ? "Painel de Administração" : "Painel do Organizador — Eventos"}
+                    </h1>
                     <hr className="section-divider" />
 
-                    {/* Abas de alternância do Painel de Administração */}
-                    <div className="admin-abas">
-                        <button
-                            type="button"
-                            className={`admin-aba-btn ${abaAtiva === "usuarios" ? "ativa" : ""}`}
-                            onClick={() => setAbaAtiva("usuarios")}
-                        >
-                            Gerenciar Usuários
-                        </button>
-                        <button
-                            type="button"
-                            className={`admin-aba-btn ${abaAtiva === "eventos" ? "ativa" : ""}`}
-                            onClick={() => setAbaAtiva("eventos")}
-                        >
-                            Gerenciar Eventos
-                        </button>
-                        <button
-                            type="button"
-                            className={`admin-aba-btn ${abaAtiva === "tiposEvento" ? "ativa" : ""}`}
-                            onClick={() => setAbaAtiva("tiposEvento")}
-                        >
-                            Tipos de Evento
-                        </button>
-                        <button
-                            type="button"
-                            className={`admin-aba-btn ${abaAtiva === "tiposUsuario" ? "ativa" : ""}`}
-                            onClick={() => setAbaAtiva("tiposUsuario")}
-                        >
-                            Tipos de Usuário
-                        </button>
-                    </div>
+                    {/* Abas de alternância do Painel de Administração (visível apenas para Administradores) */}
+                    {ehAdmin && (
+                        <div className="admin-abas">
+                            <button
+                                type="button"
+                                className={`admin-aba-btn ${abaExibida === "usuarios" ? "ativa" : ""}`}
+                                onClick={() => setAbaAtiva("usuarios")}
+                            >
+                                Gerenciar Usuários
+                            </button>
+                            <button
+                                type="button"
+                                className={`admin-aba-btn ${abaExibida === "eventos" ? "ativa" : ""}`}
+                                onClick={() => setAbaAtiva("eventos")}
+                            >
+                                Gerenciar Eventos
+                            </button>
+                            <button
+                                type="button"
+                                className={`admin-aba-btn ${abaExibida === "tiposEvento" ? "ativa" : ""}`}
+                                onClick={() => setAbaAtiva("tiposEvento")}
+                            >
+                                Tipos de Evento
+                            </button>
+                            <button
+                                type="button"
+                                className={`admin-aba-btn ${abaExibida === "tiposUsuario" ? "ativa" : ""}`}
+                                onClick={() => setAbaAtiva("tiposUsuario")}
+                            >
+                                Tipos de Usuário
+                            </button>
+                        </div>
+                    )}
 
                     {/* ABA 1: GERENCIAR USUÁRIOS */}
-                    {abaAtiva === "usuarios" && (
+                    {abaExibida === "usuarios" && (
                         <div className="cadastro-usuario-conteudo">
                             <img
                                 src={UsuarioImg}
@@ -550,7 +560,7 @@ function Usuarios() {
                     )}
 
                     {/* ABA 2: GERENCIAR EVENTOS */}
-                    {abaAtiva === "eventos" && (
+                    {abaExibida === "eventos" && (
                         <div className="cadastro-usuario-conteudo">
                             <img
                                 src={EventoImg}
@@ -672,7 +682,7 @@ function Usuarios() {
                     )}
 
                     {/* ABA 3: TIPOS DE EVENTO */}
-                    {abaAtiva === "tiposEvento" && (
+                    {abaExibida === "tiposEvento" && (
                         <div className="cadastro-usuario-conteudo">
                             <img
                                 src={TipoEventoImg}
@@ -735,7 +745,7 @@ function Usuarios() {
                     )}
 
                     {/* ABA 4: TIPOS DE USUÁRIO */}
-                    {abaAtiva === "tiposUsuario" && (
+                    {abaExibida === "tiposUsuario" && (
                         <div className="cadastro-usuario-conteudo">
                             <img
                                 src={TipoUsuarioImg}
@@ -799,7 +809,7 @@ function Usuarios() {
                 </section>
 
                 {/* LISTAGEM E MODAL DE CADA ABA */}
-                {abaAtiva === "usuarios" && (
+                {abaExibida === "usuarios" && (
                     <>
                         <ListaUsuarios
                             usuarios={usuarios}
@@ -826,7 +836,7 @@ function Usuarios() {
                     </>
                 )}
 
-                {abaAtiva === "eventos" && (
+                {abaExibida === "eventos" && (
                     <>
                         <ListaEventosAdmin
                             eventos={eventos}
@@ -853,7 +863,7 @@ function Usuarios() {
                     </>
                 )}
 
-                {abaAtiva === "tiposEvento" && (
+                {abaExibida === "tiposEvento" && (
                     <>
                         <ListaTiposAdmin
                             tituloSecao="Tipos de eventos cadastrados"
@@ -883,7 +893,7 @@ function Usuarios() {
                     </>
                 )}
 
-                {abaAtiva === "tiposUsuario" && (
+                {abaExibida === "tiposUsuario" && (
                     <>
                         <ListaTiposAdmin
                             tituloSecao="Tipos de usuários cadastrados"

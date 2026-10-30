@@ -1,15 +1,27 @@
 @reference "../../index.css";
 
 .login-pagina {
-    @apply min-h-screen w-full flex flex-col justify-center items-center gap-8 p-6 bg-white font-primary;
+    @apply min-h-screen w-full flex flex-col justify-center items-center gap-6 sm:gap-8 p-4 sm:p-6 bg-off-white font-primary;
 }
 
 .login-pagina img {
-    @apply w-[180px] h-auto object-contain;
+    @apply w-[150px] sm:w-[180px] h-auto object-contain;
 }
 
 .login-form {
-    @apply w-full max-w-[400px] rounded-2xl px-8 py-9 flex flex-col gap-5 bg-white;
+    @apply w-full max-w-[420px] rounded-2xl px-5 py-6 sm:px-8 sm:py-9 flex flex-col gap-4 sm:gap-5 bg-white shadow-xl border border-border;
+}
+
+.login-cabecalho {
+    @apply flex flex-col gap-1 text-center mb-1;
+}
+
+.login-cabecalho h1 {
+    @apply text-xl sm:text-2xl font-bold m-0 text-text-dark;
+}
+
+.login-cabecalho p {
+    @apply text-xs sm:text-sm m-0 text-text-gray;
 }
 
 .login-form > div {
@@ -30,4 +42,20 @@
 
 .login-erro {
     @apply px-3.5 py-2.5 rounded-lg text-sm font-semibold text-center m-0 border-l-4 border-l-crimson bg-off-white text-crimson-dark;
+}
+
+.login-rodape {
+    @apply flex flex-col items-center gap-2 pt-3 border-t border-t-border text-center text-sm text-text-gray;
+}
+
+.login-rodape p {
+    @apply m-0;
+}
+
+.login-rodape a {
+    @apply font-semibold text-crimson hover:text-crimson-dark hover:underline transition-colors;
+}
+
+.login-rodape .login-voltar-home {
+    @apply text-xs font-medium text-text-gray hover:text-crimson no-underline;
 }

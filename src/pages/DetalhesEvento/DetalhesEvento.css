@@ -1,8 +1,8 @@
 @reference "../../index.css";
 
 .detalhes-evento-pagina {
-    @apply mx-auto mt-12 mb-20 grid grid-cols-1 lg:grid-cols-[1fr_360px] gap-10 items-start;
-    width: min(1200px, calc(100% - 48px));
+    @apply mx-auto mt-6 md:mt-12 mb-12 md:mb-20 grid grid-cols-1 lg:grid-cols-[1fr_360px] gap-7 lg:gap-10 items-start;
+    width: min(1200px, calc(100% - 32px));
 }
 
 .detalhes-estado {
@@ -14,11 +14,11 @@
 }
 
 .detalhes-evento-conteudo {
-    @apply flex flex-col gap-6;
+    @apply flex flex-col gap-5 md:gap-6;
 }
 
 .detalhes-banner-wrapper {
-    @apply w-full h-[260px] lg:h-[400px] rounded-2xl overflow-hidden shadow-lg bg-text-dark;
+    @apply w-full h-[200px] sm:h-[260px] lg:h-[400px] rounded-2xl overflow-hidden shadow-lg bg-text-dark;
 }
 
 .detalhes-banner {
@@ -26,15 +26,15 @@
 }
 
 .detalhes-titulo {
-    @apply text-3xl lg:text-4xl font-bold m-0 text-text-dark;
+    @apply text-2xl sm:text-3xl lg:text-4xl font-bold m-0 text-text-dark break-words;
 }
 
 .detalhes-abas {
-    @apply flex gap-3 pb-3 border-b-2 border-b-border;
+    @apply flex flex-wrap gap-2.5 sm:gap-3 pb-3 border-b-2 border-b-border;
 }
 
 .aba-btn {
-    @apply bg-transparent px-5 py-2 rounded-full font-semibold border-2 border-crimson text-crimson cursor-pointer transition-all duration-200;
+    @apply flex-1 sm:flex-none text-center bg-transparent px-4 py-2 sm:px-5 text-xs sm:text-base rounded-full font-semibold border-2 border-crimson text-crimson cursor-pointer transition-all duration-200;
 }
 
 .aba-btn.ativa {
@@ -46,11 +46,11 @@
 }
 
 .detalhes-descricao {
-    @apply text-base leading-relaxed whitespace-pre-line text-text-gray;
+    @apply text-sm sm:text-base leading-relaxed whitespace-pre-line text-text-gray break-words;
 }
 
 .detalhes-comentarios h2 {
-    @apply text-2xl font-bold mb-4 text-text-dark;
+    @apply text-xl sm:text-2xl font-bold mb-4 text-text-dark;
 }
 
 .sem-comentarios {
@@ -74,12 +74,12 @@
 }
 
 .item-comentario p {
-    @apply mt-1.5 m-0 text-text-gray;
+    @apply mt-1.5 m-0 text-text-gray break-words;
 }
 
 /* Formulário de Novo Comentário */
 .form-comentario {
-    @apply flex flex-col gap-3 mb-6 p-4 rounded-xl border border-border bg-off-white;
+    @apply flex flex-col gap-3 mb-6 p-3.5 sm:p-4 rounded-xl border border-border bg-off-white;
 }
 
 .form-comentario textarea {
@@ -91,7 +91,7 @@
 }
 
 .form-comentario-acoes .botao {
-    @apply px-5 py-2.5 rounded-lg font-semibold border-0 cursor-pointer transition-colors bg-crimson text-white hover:enabled:bg-crimson-dark;
+    @apply w-full sm:w-auto px-5 py-2.5 rounded-lg font-semibold border-0 cursor-pointer transition-colors bg-crimson text-white hover:enabled:bg-crimson-dark;
 }
 
 .aviso-inscricao-comentario {
@@ -100,11 +100,11 @@
 
 /* Card Lateral Direito */
 .detalhes-evento-card-info {
-    @apply rounded-2xl p-7 shadow-xl flex flex-col gap-4 lg:sticky lg:top-6 border border-border bg-white;
+    @apply rounded-2xl p-5 sm:p-7 shadow-xl flex flex-col gap-4 lg:sticky lg:top-20 border border-border bg-white;
 }
 
 .detalhes-evento-card-info h2 {
-    @apply text-xl font-bold m-0 text-text-dark;
+    @apply text-lg sm:text-xl font-bold m-0 text-text-dark;
 }
 
 .detalhes-evento-card-info hr {
@@ -116,7 +116,7 @@
 }
 
 .info-item img {
-    @apply w-5 h-5 object-contain;
+    @apply w-5 h-5 object-contain shrink-0;
 }
 
 .detalhes-evento-card-info .botao {
