@@ -33,5 +33,13 @@ export function perfilEhOrganizador(perfil: string) {
 
 export function perfilEhParticipante(perfil: string) {
     const p = perfil.trim().toLowerCase();
-    return p === "comum" || p === "participante" || p === "aluno";
+    return p === "participante" || p === "comum" || p === "aluno";
+}
+
+export function formatarNomePerfil(titulo?: string | null) {
+    const limpo = titulo?.trim() || "";
+    if (!limpo || limpo.toLowerCase() === "comum") {
+        return "Participante";
+    }
+    return limpo;
 }

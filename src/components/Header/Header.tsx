@@ -1,6 +1,11 @@
 import { useState } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
-import { perfilEhAdministrador, perfilEhOrganizador, useAuth } from "../../context/Auth";
+import {
+    formatarNomePerfil,
+    perfilEhAdministrador,
+    perfilEhOrganizador,
+    useAuth,
+} from "../../context/Auth";
 
 import LogoEvent from "../../assets/logo1.svg";
 import "./Header.css";
@@ -60,7 +65,7 @@ function Header() {
                                 <span className="header-usuario-info">
                                     {usuario?.nome?.split(" ")[0] || "Usuário"}
                                     <small className="header-usuario-badge">
-                                        {usuario?.idTipoUsuarioNavigation?.titulo || "Participante"}
+                                        {formatarNomePerfil(usuario?.idTipoUsuarioNavigation?.titulo)}
                                     </small>
                                 </span>
                                 <button type="button" onClick={sair}>Sair</button>

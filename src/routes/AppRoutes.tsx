@@ -1,6 +1,6 @@
 import type { PropsWithChildren } from "react";
 import { Link, Navigate, Route, Routes } from "react-router-dom";
-import { perfilEhOrganizador, useAuth } from "../context/Auth";
+import { formatarNomePerfil, perfilEhOrganizador, useAuth } from "../context/Auth";
 import Header from "../components/Header/Header";
 import Footer from "../components/Footer/Footer";
 import Home from "../pages/Home/Home";
@@ -44,7 +44,7 @@ function RotaGestao({ children }: PropsWithChildren) {
                     <hr className="linha-titulo my-1" />
                     <p className="text-text-gray max-w-md text-sm sm:text-base">
                         Olá, <strong>{usuario?.nome || "participante"}</strong>! Seu perfil atual (
-                        <strong>{usuario?.idTipoUsuarioNavigation?.titulo || "Participante"}</strong>) permite
+                        <strong>{formatarNomePerfil(usuario?.idTipoUsuarioNavigation?.titulo)}</strong>) permite
                         visualizar eventos, confirmar presença e comentar, mas não possui permissão para acessar o
                         painel de gestão.
                     </p>

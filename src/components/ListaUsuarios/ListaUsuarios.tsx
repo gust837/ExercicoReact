@@ -1,4 +1,5 @@
 import type { Usuario } from "../../types/api";
+import { formatarNomePerfil } from "../../context/Auth";
 import "./ListaUsuarios.css";
 
 import lapis from "../../assets/icons/lapis.svg";
@@ -52,7 +53,7 @@ function ListaUsuarios({ usuarios, idEmEdicao, carregando, onEditar, onExcluir }
                                     >
                                         <td>{usuario.nome}</td>
                                         <td>{usuario.email}</td>
-                                        <td>{usuario.idTipoUsuarioNavigation?.titulo || "Não informado"}</td>
+                                        <td>{formatarNomePerfil(usuario.idTipoUsuarioNavigation?.titulo)}</td>
                                         <td>
                                             <button
                                                 className="lista-tipos-acao"

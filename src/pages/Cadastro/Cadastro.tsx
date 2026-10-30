@@ -50,12 +50,12 @@ function Cadastro() {
                 return;
             }
 
-            // Busca os tipos de usuário disponíveis e vincula automaticamente ao perfil Comum / Participante
+            // Busca os tipos de usuário disponíveis e vincula automaticamente ao perfil Participante
             const tipos = await tipoUsuarioService.listar();
             const tipoParticipante =
                 tipos.find((t) => {
                     const titulo = t.titulo.trim().toLowerCase();
-                    return titulo === "comum" || titulo === "participante" || titulo === "aluno";
+                    return titulo === "participante" || titulo === "comum" || titulo === "aluno";
                 }) ||
                 tipos.find((t) => {
                     const titulo = t.titulo.trim().toLowerCase();

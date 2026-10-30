@@ -5,7 +5,7 @@ import "./Usuario.css";
 import type { Evento, Instituicao, TipoEvento, TipoUsuario, Usuario } from "../../types/api";
 import Campo from "../../components/Campo/Campo";
 import Botao from "../../components/Botao/Botao";
-import { perfilEhAdministrador, useAuth } from "../../context/Auth";
+import { formatarNomePerfil, perfilEhAdministrador, useAuth } from "../../context/Auth";
 import {
     eventoService,
     instituicaoService,
@@ -515,7 +515,7 @@ function Usuarios() {
                                     >
                                         {tipos.map((tipo) => (
                                             <option value={tipo.idTipoUsuario} key={tipo.idTipoUsuario}>
-                                                {tipo.titulo}
+                                                {formatarNomePerfil(tipo.titulo)}
                                             </option>
                                         ))}
                                     </select>
@@ -775,7 +775,7 @@ function Usuarios() {
                                     name="tituloTipoUsuario"
                                     value={tituloTipoUsuario}
                                     onChange={(e) => setTituloTipoUsuario(e.target.value)}
-                                    placeholder="Ex: Administrador, Comum, Palestrante..."
+                                    placeholder="Ex: Administrador, Organizador, Participante..."
                                     maxLength={100}
                                     required
                                 />
@@ -906,7 +906,7 @@ function Usuarios() {
                             tituloSecao="Tipos de usuários cadastrados"
                             colunaTitulo="Perfil / Tipo de Usuário"
                             mensagemVazia="Nenhum tipo de usuário cadastrado"
-                            itens={tipos.map((t) => ({ id: t.idTipoUsuario, titulo: t.titulo }))}
+                            itens={tipos.map((t) => ({ id: t.idTipoUsuario, titulo: formatarNomePerfil(t.titulo) }))}
                             idEmEdicao={idTipoUsuarioEmEdicao}
                             carregando={carregando}
                             onEditar={editarTipoUsuario}
