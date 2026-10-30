@@ -14,7 +14,15 @@
 }
 
 .lista-tipos-divisor {
-    @apply w-24 mt-3 mb-6 md:mb-8 border-0 border-t-2 border-t-white;
+    @apply w-24 mt-3 mb-6 border-0 border-t-2 border-t-white;
+}
+
+.lista-filtro-barra {
+    @apply w-full max-w-md mb-6;
+}
+
+.lista-filtro-input {
+    @apply w-full px-4 py-2.5 rounded-xl border-2 border-white/30 bg-white text-text-dark font-primary text-sm placeholder:text-text-gray outline-none shadow-md transition-all focus:border-white;
 }
 
 .lista-tipos-tabela-wrapper {

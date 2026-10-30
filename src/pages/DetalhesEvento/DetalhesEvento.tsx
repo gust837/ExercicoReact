@@ -3,6 +3,7 @@ import { useCallback, useEffect, useState, type FormEvent } from "react";
 import { comentarioService, eventoService, presencaService } from "../../services/eventPlusService";
 import type { Presenca, Evento, Comentario } from "../../types/api";
 import { formatarDataCurta, formatarDataLonga } from "../../utils/formatarData";
+import { normalizarTexto } from "../../utils/validarEmail";
 
 import imagemPadrao from "../../assets/banner-1.png";
 import relogio from "../../assets/icons/relogio.svg";
@@ -127,6 +128,16 @@ function DetalhesEvento() {
             return;
         }
 
+        const comentarioRepetido = comentarios.some(
+            (c) =>
+                c.idUsuario === usuario?.idUsuario &&
+                normalizarTexto(c.descricao) === normalizarTexto(novoComentario)
+        );
+        if (comentarioRepetido) {
+            setMensagemComentario("Você já publicou este mesmo comentário neste evento.");
+            return;
+        }
+
         setEnviandoComentario(true);
         setMensagemComentario("");
 
@@ -211,7 +222,14 @@ function DetalhesEvento() {
                                         {/* Só exibe o formulário se o usuário estiver logado e inscrito no evento */}
                                         {autenticado && presenca ? (
                                             <form className="form-comentario" onSubmit={enviarComentario}>
+                                                <label
+                                                    htmlFor="comentario-texto"
+                                                    className="text-sm font-semibold text-text-dark"
+                                                >
+                                                    Seu comentário sobre o evento
+                                                </label>
                                                 <textarea
+                                                    id="comentario-texto"
                                                     placeholder="Escreva sua avaliação ou comentário sobre o evento..."
                                                     value={novoComentario}
                                                     onChange={(e) => setNovoComentario(e.target.value)}

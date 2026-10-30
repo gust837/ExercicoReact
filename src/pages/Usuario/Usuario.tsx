@@ -14,7 +14,7 @@ import {
     usuarioService,
 } from "../../services/eventPlusService";
 import { getApiErrorMessage } from "../../services/api";
-import { validarEmailReal } from "../../utils/validarEmail";
+import { normalizarTexto, validarEmailReal } from "../../utils/validarEmail";
 import Modal from "../../components/Modal/Modal";
 import ListaUsuarios from "../../components/ListaUsuarios/ListaUsuarios";
 import ListaEventosAdmin from "../../components/ListaEventosAdmin/ListaEventosAdmin";
@@ -62,7 +62,7 @@ function paraDataInput(valor: string) {
 }
 
 function Usuarios() {
-    const { perfil } = useAuth();
+    const { perfil, usuario: usuarioLogado } = useAuth();
     const ehAdmin = perfilEhAdministrador(perfil);
     const [abaAtiva, setAbaAtiva] = useState<AbaAdmin>("usuarios");
     const abaExibida: AbaAdmin = ehAdmin ? abaAtiva : "eventos";
@@ -173,15 +173,33 @@ function Usuarios() {
         setEnviando(true);
         setMensagem("");
         try {
-            const erroEmail = await validarEmailReal(formulario.email);
+            const nomeLimpo = formulario.nome.trim();
+            const emailLimpo = formulario.email.trim();
+
+            if (nomeLimpo.length < 3 || !/[a-zA-ZÀ-ÿ]{2,}/.test(nomeLimpo)) {
+                setMensagem("Informe um nome válido com pelo menos 3 caracteres.");
+                return;
+            }
+
+            const erroEmail = await validarEmailReal(emailLimpo);
             if (erroEmail) {
                 setMensagem(erroEmail);
                 return;
             }
 
+            const emailDuplicado = usuarios.some(
+                (u) =>
+                    u.idUsuario !== idEmEdicao &&
+                    normalizarTexto(u.email) === normalizarTexto(emailLimpo)
+            );
+            if (emailDuplicado) {
+                setMensagem("Já existe um usuário cadastrado com este endereço de e-mail.");
+                return;
+            }
+
             const payload = {
-                nome: formulario.nome.trim(),
-                email: formulario.email.trim(),
+                nome: nomeLimpo,
+                email: emailLimpo,
                 senha: formulario.senha.trim() || undefined,
                 idTipoUsuario: formulario.idTipoUsuario || null,
             };
@@ -209,6 +227,15 @@ function Usuarios() {
         });
         setMensagem("Editando usuário. Deixe a senha em branco caso não queira alterá-la.");
         window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function solicitarExclusaoUsuario(usuarioAlvo: Usuario) {
+        if (usuarioLogado && usuarioAlvo.idUsuario === usuarioLogado.idUsuario) {
+            setMensagem("Você não pode excluir a sua própria conta de Administrador em uso.");
+            window.scrollTo({ top: 0, behavior: "smooth" });
+            return;
+        }
+        setSelecionado(usuarioAlvo);
     }
 
     async function excluir() {
@@ -251,9 +278,34 @@ function Usuarios() {
         setEnviandoEvento(true);
         setMensagemEvento("");
         try {
+            const nomeLimpo = formEvento.nomeEvento.trim();
+            const descricaoLimpa = formEvento.descricao.trim();
+
+            if (nomeLimpo.length < 3) {
+                setMensagemEvento("O nome do evento deve ter pelo menos 3 caracteres.");
+                return;
+            }
+
+            if (descricaoLimpa.length < 10) {
+                setMensagemEvento("A descrição do evento deve ter pelo menos 10 caracteres.");
+                return;
+            }
+
+            const eventoDuplicado = eventos.some(
+                (e) =>
+                    e.idEvento !== idEventoEmEdicao &&
+                    normalizarTexto(e.nomeEvento) === normalizarTexto(nomeLimpo)
+            );
+            if (eventoDuplicado) {
+                setMensagemEvento(
+                    "Já existe um evento cadastrado com este nome. Escolha um título diferente."
+                );
+                return;
+            }
+
             const payload = {
-                nomeEvento: formEvento.nomeEvento.trim(),
-                descricao: formEvento.descricao.trim(),
+                nomeEvento: nomeLimpo,
+                descricao: descricaoLimpa,
                 dataEvento: formEvento.dataEvento,
                 idTipoEvento: formEvento.idTipoEvento,
                 idInstituicao: formEvento.idInstituicao,
@@ -320,7 +372,22 @@ function Usuarios() {
     async function salvarTipoEvento(event: FormEvent<HTMLFormElement>) {
         event.preventDefault();
         const tituloLimpo = tituloTipoEvento.trim();
-        if (!tituloLimpo) return;
+        if (tituloLimpo.length < 3) {
+            setMensagemTipoEvento("O título do tipo de evento deve ter pelo menos 3 caracteres.");
+            return;
+        }
+
+        const tipoDuplicado = tiposEvento.some(
+            (t) =>
+                t.idTipoEvento !== idTipoEventoEmEdicao &&
+                normalizarTexto(t.titulo) === normalizarTexto(tituloLimpo)
+        );
+        if (tipoDuplicado) {
+            setMensagemTipoEvento(
+                `O tipo de evento "${tituloLimpo}" já está cadastrado (não é permitido repetir nomes em maiúsculas ou minúsculas).`
+            );
+            return;
+        }
 
         setEnviandoTipoEvento(true);
         setMensagemTipoEvento("");
@@ -378,7 +445,23 @@ function Usuarios() {
     async function salvarTipoUsuario(event: FormEvent<HTMLFormElement>) {
         event.preventDefault();
         const tituloLimpo = tituloTipoUsuario.trim();
-        if (!tituloLimpo) return;
+        if (tituloLimpo.length < 3) {
+            setMensagemTipoUsuario("O título do tipo de usuário deve ter pelo menos 3 caracteres.");
+            return;
+        }
+
+        const tituloNormalizado = normalizarTexto(formatarNomePerfil(tituloLimpo));
+        const tipoDuplicado = tipos.some(
+            (t) =>
+                t.idTipoUsuario !== idTipoUsuarioEmEdicao &&
+                normalizarTexto(formatarNomePerfil(t.titulo)) === tituloNormalizado
+        );
+        if (tipoDuplicado) {
+            setMensagemTipoUsuario(
+                `O tipo de usuário "${formatarNomePerfil(tituloLimpo)}" já está cadastrado (não é permitido repetir nomes em maiúsculas ou minúsculas).`
+            );
+            return;
+        }
 
         setEnviandoTipoUsuario(true);
         setMensagemTipoUsuario("");
@@ -481,47 +564,61 @@ function Usuarios() {
                             <form className="cadastro-usuario-formulario" onSubmit={salvar}>
                                 <h2>{idEmEdicao ? "Editar usuário" : "Cadastrar usuário"}</h2>
 
-                                <label className="visually-hidden" htmlFor="usuario-email">Email</label>
-                                <Campo
-                                    id="usuario-email"
-                                    type="email"
-                                    name="email"
-                                    value={formulario.email}
-                                    onChange={atualizar}
-                                    placeholder="Email"
-                                    required
-                                />
+                                <div className="campo-grupo">
+                                    <label className="campo-label" htmlFor="usuario-nome">
+                                        Nome completo
+                                    </label>
+                                    <Campo
+                                        id="usuario-nome"
+                                        type="text"
+                                        name="nome"
+                                        value={formulario.nome}
+                                        onChange={atualizar}
+                                        placeholder="Ex: Maria Silva"
+                                        maxLength={100}
+                                        required
+                                    />
+                                </div>
 
-                                <label className="visually-hidden" htmlFor="usuario-nome">Nome</label>
-                                <Campo
-                                    id="usuario-nome"
-                                    type="text"
-                                    name="nome"
-                                    value={formulario.nome}
-                                    onChange={atualizar}
-                                    placeholder="Nome"
-                                    maxLength={100}
-                                    required
-                                />
+                                <div className="campo-grupo">
+                                    <label className="campo-label" htmlFor="usuario-email">
+                                        E-mail
+                                    </label>
+                                    <Campo
+                                        id="usuario-email"
+                                        type="email"
+                                        name="email"
+                                        value={formulario.email}
+                                        onChange={atualizar}
+                                        placeholder="Ex: maria.silva@gmail.com"
+                                        required
+                                    />
+                                </div>
 
                                 <div className="cadastro-usuario-grid">
-                                    <label htmlFor="usuario-tipo" className="visually-hidden">Tipo de usuário</label>
-                                    <select
-                                        name="idTipoUsuario"
-                                        id="usuario-tipo"
-                                        value={formulario.idTipoUsuario}
-                                        onChange={atualizar}
-                                        required
-                                    >
-                                        {tipos.map((tipo) => (
-                                            <option value={tipo.idTipoUsuario} key={tipo.idTipoUsuario}>
-                                                {formatarNomePerfil(tipo.titulo)}
-                                            </option>
-                                        ))}
-                                    </select>
+                                    <div className="campo-grupo">
+                                        <label htmlFor="usuario-tipo" className="campo-label">
+                                            Cargo / Tipo de usuário
+                                        </label>
+                                        <select
+                                            name="idTipoUsuario"
+                                            id="usuario-tipo"
+                                            value={formulario.idTipoUsuario}
+                                            onChange={atualizar}
+                                            required
+                                        >
+                                            {tipos.map((tipo) => (
+                                                <option value={tipo.idTipoUsuario} key={tipo.idTipoUsuario}>
+                                                    {formatarNomePerfil(tipo.titulo)}
+                                                </option>
+                                            ))}
+                                        </select>
+                                    </div>
 
-                                    <div>
-                                        <label htmlFor="usuario-senha" className="visually-hidden">Senha</label>
+                                    <div className="campo-grupo">
+                                        <label htmlFor="usuario-senha" className="campo-label">
+                                            {idEmEdicao ? "Nova senha (opcional)" : "Senha"}
+                                        </label>
                                         <Campo
                                             id="usuario-senha"
                                             name="senha"
@@ -530,8 +627,8 @@ function Usuarios() {
                                             onChange={atualizar}
                                             placeholder={
                                                 idEmEdicao
-                                                    ? "Nova senha (opcional — deixe em branco para manter)"
-                                                    : "Senha"
+                                                    ? "Deixe em branco para manter a senha atual"
+                                                    : "Mínimo de 8 caracteres"
                                             }
                                             minLength={8}
                                             maxLength={60}
@@ -577,58 +674,74 @@ function Usuarios() {
                             <form className="cadastro-usuario-formulario" onSubmit={salvarEvento}>
                                 <h2>{idEventoEmEdicao ? "Editar evento" : "Cadastrar evento"}</h2>
 
-                                <label className="visually-hidden" htmlFor="evento-nome">Nome do evento</label>
-                                <Campo
-                                    id="evento-nome"
-                                    type="text"
-                                    name="nomeEvento"
-                                    value={formEvento.nomeEvento}
-                                    onChange={atualizarEvento}
-                                    placeholder="Nome do evento"
-                                    maxLength={100}
-                                    required
-                                />
+                                <div className="campo-grupo">
+                                    <label className="campo-label" htmlFor="evento-nome">
+                                        Nome do evento
+                                    </label>
+                                    <Campo
+                                        id="evento-nome"
+                                        type="text"
+                                        name="nomeEvento"
+                                        value={formEvento.nomeEvento}
+                                        onChange={atualizarEvento}
+                                        placeholder="Ex: Workshop de Inteligência Artificial"
+                                        maxLength={100}
+                                        required
+                                    />
+                                </div>
 
-                                <label className="visually-hidden" htmlFor="evento-data">Data do evento</label>
-                                <Campo
-                                    id="evento-data"
-                                    type="date"
-                                    name="dataEvento"
-                                    value={formEvento.dataEvento}
-                                    onChange={atualizarEvento}
-                                    required
-                                />
+                                <div className="campo-grupo">
+                                    <label className="campo-label" htmlFor="evento-data">
+                                        Data do evento
+                                    </label>
+                                    <Campo
+                                        id="evento-data"
+                                        type="date"
+                                        name="dataEvento"
+                                        value={formEvento.dataEvento}
+                                        onChange={atualizarEvento}
+                                        required
+                                    />
+                                </div>
 
                                 <div className="cadastro-usuario-grid">
-                                    <label htmlFor="evento-tipo" className="visually-hidden">Categoria do evento</label>
-                                    <select
-                                        name="idTipoEvento"
-                                        id="evento-tipo"
-                                        value={formEvento.idTipoEvento}
-                                        onChange={atualizarEvento}
-                                        required
-                                    >
-                                        {tiposEvento.map((tipo) => (
-                                            <option value={tipo.idTipoEvento} key={tipo.idTipoEvento}>
-                                                {tipo.titulo}
-                                            </option>
-                                        ))}
-                                    </select>
+                                    <div className="campo-grupo">
+                                        <label htmlFor="evento-tipo" className="campo-label">
+                                            Categoria / Tipo de evento
+                                        </label>
+                                        <select
+                                            name="idTipoEvento"
+                                            id="evento-tipo"
+                                            value={formEvento.idTipoEvento}
+                                            onChange={atualizarEvento}
+                                            required
+                                        >
+                                            {tiposEvento.map((tipo) => (
+                                                <option value={tipo.idTipoEvento} key={tipo.idTipoEvento}>
+                                                    {tipo.titulo}
+                                                </option>
+                                            ))}
+                                        </select>
+                                    </div>
 
-                                    <label htmlFor="evento-instituicao" className="visually-hidden">Instituição</label>
-                                    <select
-                                        name="idInstituicao"
-                                        id="evento-instituicao"
-                                        value={formEvento.idInstituicao}
-                                        onChange={atualizarEvento}
-                                        required
-                                    >
-                                        {instituicoes.map((inst) => (
-                                            <option value={inst.idInstituicao} key={inst.idInstituicao}>
-                                                {inst.nomeFantasia}
-                                            </option>
-                                        ))}
-                                    </select>
+                                    <div className="campo-grupo">
+                                        <label htmlFor="evento-instituicao" className="campo-label">
+                                            Instituição
+                                        </label>
+                                        <select
+                                            name="idInstituicao"
+                                            id="evento-instituicao"
+                                            value={formEvento.idInstituicao}
+                                            onChange={atualizarEvento}
+                                            required
+                                        >
+                                            {instituicoes.map((inst) => (
+                                                <option value={inst.idInstituicao} key={inst.idInstituicao}>
+                                                    {inst.nomeFantasia}
+                                                </option>
+                                            ))}
+                                        </select>
+                                    </div>
 
                                     <div className="campo-arquivo-wrapper">
                                         <label htmlFor="evento-imagem" className="campo-arquivo-label">
@@ -644,16 +757,20 @@ function Usuarios() {
                                         />
                                     </div>
 
-                                    <label htmlFor="evento-descricao" className="visually-hidden">Descrição</label>
-                                    <textarea
-                                        id="evento-descricao"
-                                        name="descricao"
-                                        value={formEvento.descricao}
-                                        onChange={atualizarEvento}
-                                        placeholder="Descrição do evento"
-                                        rows={3}
-                                        required
-                                    />
+                                    <div className="campo-grupo">
+                                        <label htmlFor="evento-descricao" className="campo-label">
+                                            Descrição do evento
+                                        </label>
+                                        <textarea
+                                            id="evento-descricao"
+                                            name="descricao"
+                                            value={formEvento.descricao}
+                                            onChange={atualizarEvento}
+                                            placeholder="Descreva os detalhes, horário e objetivos do evento..."
+                                            rows={3}
+                                            required
+                                        />
+                                    </div>
 
                                     <div className="cadastro-usuario-acoes">
                                         <Botao
@@ -703,19 +820,21 @@ function Usuarios() {
                                         : "Cadastrar tipo de evento"}
                                 </h2>
 
-                                <label className="visually-hidden" htmlFor="tipo-evento-titulo">
-                                    Título do tipo de evento
-                                </label>
-                                <Campo
-                                    id="tipo-evento-titulo"
-                                    type="text"
-                                    name="tituloTipoEvento"
-                                    value={tituloTipoEvento}
-                                    onChange={(e) => setTituloTipoEvento(e.target.value)}
-                                    placeholder="Ex: Workshop, Hackathon, Palestra..."
-                                    maxLength={100}
-                                    required
-                                />
+                                <div className="campo-grupo">
+                                    <label className="campo-label" htmlFor="tipo-evento-titulo">
+                                        Nome da categoria / Tipo de evento
+                                    </label>
+                                    <Campo
+                                        id="tipo-evento-titulo"
+                                        type="text"
+                                        name="tituloTipoEvento"
+                                        value={tituloTipoEvento}
+                                        onChange={(e) => setTituloTipoEvento(e.target.value)}
+                                        placeholder="Ex: Workshop, Hackathon, Palestra..."
+                                        maxLength={100}
+                                        required
+                                    />
+                                </div>
 
                                 <div className="cadastro-usuario-grid">
                                     <div className="cadastro-usuario-acoes">
@@ -766,19 +885,21 @@ function Usuarios() {
                                         : "Cadastrar tipo de usuário"}
                                 </h2>
 
-                                <label className="visually-hidden" htmlFor="tipo-usuario-titulo">
-                                    Título do tipo de usuário
-                                </label>
-                                <Campo
-                                    id="tipo-usuario-titulo"
-                                    type="text"
-                                    name="tituloTipoUsuario"
-                                    value={tituloTipoUsuario}
-                                    onChange={(e) => setTituloTipoUsuario(e.target.value)}
-                                    placeholder="Ex: Administrador, Organizador, Participante..."
-                                    maxLength={100}
-                                    required
-                                />
+                                <div className="campo-grupo">
+                                    <label className="campo-label" htmlFor="tipo-usuario-titulo">
+                                        Nome do cargo / Tipo de usuário
+                                    </label>
+                                    <Campo
+                                        id="tipo-usuario-titulo"
+                                        type="text"
+                                        name="tituloTipoUsuario"
+                                        value={tituloTipoUsuario}
+                                        onChange={(e) => setTituloTipoUsuario(e.target.value)}
+                                        placeholder="Ex: Administrador, Organizador, Participante..."
+                                        maxLength={100}
+                                        required
+                                    />
+                                </div>
 
                                 <div className="cadastro-usuario-grid">
                                     <div className="cadastro-usuario-acoes">
@@ -823,7 +944,7 @@ function Usuarios() {
                             idEmEdicao={idEmEdicao}
                             carregando={carregando}
                             onEditar={editar}
-                            onExcluir={setSelecionado}
+                            onExcluir={solicitarExclusaoUsuario}
                         />
 
                         <Modal
@@ -904,9 +1025,12 @@ function Usuarios() {
                     <>
                         <ListaTiposAdmin
                             tituloSecao="Tipos de usuários cadastrados"
-                            colunaTitulo="Perfil / Tipo de Usuário"
+                            colunaTitulo="Cargo / Tipo de Usuário"
                             mensagemVazia="Nenhum tipo de usuário cadastrado"
-                            itens={tipos.map((t) => ({ id: t.idTipoUsuario, titulo: formatarNomePerfil(t.titulo) }))}
+                            itens={tipos.map((t) => ({
+                                id: t.idTipoUsuario,
+                                titulo: formatarNomePerfil(t.titulo),
+                            }))}
                             idEmEdicao={idTipoUsuarioEmEdicao}
                             carregando={carregando}
                             onEditar={editarTipoUsuario}

@@ -32,6 +32,11 @@ function Cadastro() {
             return;
         }
 
+        if (nomeLimpo.length < 3 || !/[a-zA-ZÀ-ÿ]{2,}/.test(nomeLimpo)) {
+            setErro("Informe um nome válido com pelo menos 3 caracteres.");
+            return;
+        }
+
         if (senha.length < 8) {
             setErro("A senha deve ter pelo menos 8 caracteres.");
             return;
