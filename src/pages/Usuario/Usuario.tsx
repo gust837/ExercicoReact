@@ -14,6 +14,7 @@ import {
     usuarioService,
 } from "../../services/eventPlusService";
 import { getApiErrorMessage } from "../../services/api";
+import { validarEmailReal } from "../../utils/validarEmail";
 import Modal from "../../components/Modal/Modal";
 import ListaUsuarios from "../../components/ListaUsuarios/ListaUsuarios";
 import ListaEventosAdmin from "../../components/ListaEventosAdmin/ListaEventosAdmin";
@@ -172,6 +173,12 @@ function Usuarios() {
         setEnviando(true);
         setMensagem("");
         try {
+            const erroEmail = await validarEmailReal(formulario.email);
+            if (erroEmail) {
+                setMensagem(erroEmail);
+                return;
+            }
+
             const payload = {
                 nome: formulario.nome.trim(),
                 email: formulario.email.trim(),

@@ -6,6 +6,7 @@ import Botao from "../../components/Botao/Botao";
 import Campo from "../../components/Campo/Campo";
 import { getApiErrorMessage } from "../../services/api";
 import { tipoUsuarioService, usuarioService } from "../../services/eventPlusService";
+import { validarEmailReal } from "../../utils/validarEmail";
 import "../Login/Login.css";
 
 function Cadastro() {
@@ -43,6 +44,12 @@ function Cadastro() {
 
         setEnviando(true);
         try {
+            const erroEmail = await validarEmailReal(emailLimpo);
+            if (erroEmail) {
+                setErro(erroEmail);
+                return;
+            }
+
             // Busca os tipos de usuário disponíveis e vincula automaticamente ao perfil Comum / Participante
             const tipos = await tipoUsuarioService.listar();
             const tipoParticipante =

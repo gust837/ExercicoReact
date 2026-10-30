@@ -13,8 +13,8 @@ function Login() {
     const navigate = useNavigate();
     const location = useLocation();
     const { login, autenticado } = useAuth();
-    const [email, setEmail] = useState("teste@email.com");
-    const [senha, setSenha] = useState("Senai@134");
+    const [email, setEmail] = useState("");
+    const [senha, setSenha] = useState("");
     const [erro, setErro] = useState("");
     const [enviando, setEnviando] = useState(false);
 
