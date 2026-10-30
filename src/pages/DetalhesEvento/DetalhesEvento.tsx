@@ -9,6 +9,7 @@ import imagemPadrao from "../../assets/banner-1.png";
 import relogio from "../../assets/icons/relogio.svg";
 import predio from "../../assets/icons/predio.svg";
 import filtro from "../../assets/icons/filtro.svg";
+import deletar from "../../assets/icons/deletar.svg";
 
 import Header from "../../components/Header/Header";
 import Footer from "../../components/Footer/Footer";
@@ -16,7 +17,7 @@ import Botao from "../../components/Botao/Botao";
 import Modal from "../../components/Modal/Modal";
 
 import "./DetalhesEvento.css";
-import { useAuth } from "../../context/Auth";
+import { perfilEhAdministrador, useAuth } from "../../context/Auth";
 import { getApiErrorMessage } from "../../services/api";
 
 function DetalhesEvento() {
@@ -25,7 +26,8 @@ function DetalhesEvento() {
     const navigate = useNavigate();
     const location = useLocation();
 
-    const { autenticado, usuario } = useAuth();
+    const { autenticado, usuario, perfil } = useAuth();
+    const ehAdmin = autenticado && perfilEhAdministrador(perfil);
     const [evento, setEvento] = useState<Evento | null>(null);
 
     const [comentarios, setComentarios] = useState<Comentario[]>([]);
@@ -33,6 +35,8 @@ function DetalhesEvento() {
     const [novoComentario, setNovoComentario] = useState("");
     const [enviandoComentario, setEnviandoComentario] = useState(false);
     const [mensagemComentario, setMensagemComentario] = useState("");
+    const [comentarioParaExcluir, setComentarioParaExcluir] = useState<Comentario | null>(null);
+    const [excluindoComentario, setExcluindoComentario] = useState(false);
 
     // Estado único para presença vinculada à chave (usuario:evento), evitando setState síncrono no useEffect
     const [presencaInfo, setPresencaInfo] = useState<{ chave: string; presenca: Presenca | null }>({
@@ -159,6 +163,25 @@ function DetalhesEvento() {
         }
     }
 
+    async function confirmarExclusaoComentario() {
+        if (!comentarioParaExcluir) return;
+        setExcluindoComentario(true);
+        setMensagemComentario("");
+
+        try {
+            await comentarioService.excluir(comentarioParaExcluir.idComentario);
+            setComentarios((atual) =>
+                atual.filter((c) => c.idComentario !== comentarioParaExcluir.idComentario)
+            );
+            setComentarioParaExcluir(null);
+            setMensagemComentario("Comentário excluído pelo administrador.");
+        } catch (error) {
+            setMensagemComentario(getApiErrorMessage(error));
+        } finally {
+            setExcluindoComentario(false);
+        }
+    }
+
     useEffect(() => {
         if (!chavePresenca) return;
         let ativo = true;
@@ -253,19 +276,68 @@ function DetalhesEvento() {
                                             </p>
                                         )}
 
+                                        { !autenticado || !presenca ? (
+                                            mensagemComentario ? (
+                                                <p className="detalhe-evento-mensagem mb-4" role="status">
+                                                    {mensagemComentario}
+                                                </p>
+                                            ) : null
+                                        ) : null}
+
                                         {comentarios.length === 0 ? (
                                             <p className="sem-comentarios">Ainda não há comentários para este evento.</p>
                                         ) : (
                                             <ul className="lista-comentarios">
                                                 {comentarios.map((c) => (
                                                     <li key={c.idComentario} className="item-comentario">
-                                                        <strong>{c.idUsuarioNavigation?.nome || "Participante"}</strong>
-                                                        <span>{formatarDataCurta(c.dataComentario)}</span>
+                                                        <div className="item-comentario-topo">
+                                                            <div className="item-comentario-autor">
+                                                                <strong>
+                                                                    {c.idUsuarioNavigation?.nome || "Participante"}
+                                                                </strong>
+                                                                <span>{formatarDataCurta(c.dataComentario)}</span>
+                                                            </div>
+                                                            {ehAdmin && (
+                                                                <button
+                                                                    type="button"
+                                                                    className="btn-excluir-comentario"
+                                                                    onClick={() => setComentarioParaExcluir(c)}
+                                                                    title="Excluir comentário (Administrador)"
+                                                                    aria-label={`Excluir comentário de ${c.idUsuarioNavigation?.nome || "Participante"}`}
+                                                                >
+                                                                    <img src={deletar} alt="" />
+                                                                    <span>Excluir</span>
+                                                                </button>
+                                                            )}
+                                                        </div>
                                                         <p>{c.descricao}</p>
                                                     </li>
                                                 ))}
                                             </ul>
                                         )}
+
+                                        <Modal
+                                            aberto={Boolean(comentarioParaExcluir)}
+                                            titulo="Excluir Comentário?"
+                                            textoConfirmar="Sim, excluir"
+                                            textoCancelar="Cancelar"
+                                            carregando={excluindoComentario}
+                                            aoConfirmar={() => void confirmarExclusaoComentario()}
+                                            aoFechar={() => setComentarioParaExcluir(null)}
+                                        >
+                                            <p>
+                                                Tem certeza que deseja excluir o comentário de{" "}
+                                                <strong>
+                                                    {comentarioParaExcluir?.idUsuarioNavigation?.nome || "Participante"}
+                                                </strong>
+                                                ?
+                                            </p>
+                                            {comentarioParaExcluir?.descricao ? (
+                                                <p className="mt-2 italic text-text-gray">
+                                                    "{comentarioParaExcluir.descricao}"
+                                                </p>
+                                            ) : null}
+                                        </Modal>
                                     </div>
                                 ) : (
                                     <p className="detalhes-descricao">{evento?.descricao}</p>

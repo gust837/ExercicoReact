@@ -384,7 +384,7 @@ function Usuarios() {
         );
         if (tipoDuplicado) {
             setMensagemTipoEvento(
-                `O tipo de evento "${tituloLimpo}" já está cadastrado (não é permitido repetir nomes em maiúsculas ou minúsculas).`
+                `O tipo de evento "${tituloLimpo}" já está cadastrado.`
             );
             return;
         }

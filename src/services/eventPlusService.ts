@@ -77,6 +77,10 @@ export const comentarioService = {
         const { data } = await axiosInstance.post<Comentario>("Comentario", payload);
         return data;
     },
+
+    async excluir(id: string) {
+        await axiosInstance.delete(`Comentario/${id}`);
+    },
 };
 
 export const presencaService = {
